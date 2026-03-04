@@ -1,0 +1,229 @@
+<!-- pages/action/index.wxml — 营养行动 MP-17~22 · 阿福管家重构 -->
+<view class="root">
+
+  <!-- Tab 导航 -->
+  <view class="tab-bar">
+    <view class="tab-item {{activeTab==='goal'?'tab-active':''}}" bindtap="onTab" data-tab="goal">目标看板</view>
+    <view class="tab-item {{activeTab==='diary'?'tab-active':''}}" bindtap="onTab" data-tab="diary">饮食打卡</view>
+    <view class="tab-item {{activeTab==='meds'?'tab-active':''}}" bindtap="onTab" data-tab="meds">服药提醒</view>
+  </view>
+
+  <!-- ======= Tab 一：目标看板 (MP-17/19) ======= -->
+  <scroll-view wx:if="{{activeTab==='goal'}}" scroll-y class="tab-body">
+
+    <!-- 阶段提示条 -->
+    <view class="phase-tip">
+      <text class="phase-tip-icon">📌</text>
+      <text class="phase-tip-text">当前阶段：{{phaseText}} · 目标由营养师定制</text>
+    </view>
+
+    <!-- MP-17: 三个半圆环进度 -->
+    <view class="ring-row">
+      <view wx:for="{{dailyProgress}}" wx:key="key" class="ring-item" bindtap="onRingTap" data-key="{{item.key}}">
+        <!-- SVG 半圆环 -->
+        <view class="ring-wrap">
+          <canvas type="2d" id="ring-{{item.key}}" class="ring-canvas" style="width:{{ringSize}}px;height:{{ringSize}}px"></canvas>
+          <view class="ring-center">
+            <view class="ring-pct">{{item.pct}}%</view>
+            <view class="ring-val">{{item.val}}</view>
+          </view>
+        </view>
+        <view class="ring-label">{{item.label}}</view>
+        <view class="ring-sub">{{item.unit}}</view>
+      </view>
+    </view>
+
+    <!-- 营养目标卡片 (MP-19) -->
+    <view wx:for="{{goalGroups}}" wx:key="title" class="card">
+      <view class="card-title-row">
+        <view class="card-dot"></view>
+        <view class="card-title">{{item.title}}</view>
+      </view>
+      <view wx:for="{{item.goals}}" wx:for-item="g" wx:key="label" class="goal-row">
+        <view class="goal-left">
+          <view class="goal-label">{{g.label}}</view>
+          <view class="goal-sub">{{g.desc}}</view>
+        </view>
+        <view class="goal-tag">{{g.target}}</view>
+      </view>
+    </view>
+
+  </scroll-view>
+
+  <!-- ======= Tab 二：饮食打卡 (MP-18/20) ======= -->
+  <scroll-view wx:if="{{activeTab==='diary'}}" scroll-y class="tab-body">
+
+    <!-- MP-20: 7 天周历 -->
+    <view class="week-card">
+      <view class="week-head">
+        <view class="week-title">本周打卡</view>
+        <view class="week-count">{{weekDoneCount}}/7 天</view>
+      </view>
+      <view class="week-row">
+        <view wx:for="{{weekDays}}" wx:key="date" class="week-col">
+          <view class="week-date-num {{item.isToday?'week-today':''}}">{{item.dayNum}}</view>
+          <view class="week-dot-wrap">
+            <view class="week-dot {{item.done?'week-dot-done':''}} {{item.isToday?'week-dot-today':''}}"></view>
+          </view>
+          <view class="week-wd">{{item.label}}</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 四餐入口 -->
+    <view class="meal-grid">
+      <view wx:for="{{meals}}" wx:key="key"
+            class="meal-btn {{mealData[item.key+'_done']?'meal-btn-done':''}}"
+            bindtap="onOpenDiet" data-key="{{item.key}}">
+        <view class="meal-btn-icon">{{item.icon}}</view>
+        <view class="meal-btn-name">{{item.name}}</view>
+        <view class="meal-btn-cal" wx:if="{{mealData[item.key+'_cal']}}">{{mealData[item.key+'_cal']}} kcal</view>
+        <view class="meal-btn-cal" wx:else>点击记录</view>
+        <view class="meal-btn-check" wx:if="{{mealData[item.key+'_done']}}">&#x2713;</view>
+        <view class="meal-btn-plus" wx:else>+</view>
+      </view>
+    </view>
+
+    <!-- 备注区 -->
+    <view class="card" style="margin:16rpx 24rpx 0">
+      <view class="card-title-row">
+        <view class="card-dot"></view>
+        <view class="card-title">今日备注</view>
+      </view>
+      <textarea class="diary-note"
+                placeholder="饮食感受、特殊情况等(选填)"
+                value="{{diaryNote}}" bindinput="onDiaryNote" maxlength="200"/>
+    </view>
+
+    <!-- 提交按钮 -->
+    <view class="action-row mb40">
+      <button class="btn-primary" bindtap="onSubmitDiary" loading="{{submitLoading}}">
+        {{submitLoading?'提交中...':'完成今日打卡 🎉'}}
+      </button>
+    </view>
+
+  </scroll-view>
+
+  <!-- ======= Tab 三：服药提醒 (MP-21/22) ======= -->
+  <scroll-view wx:if="{{activeTab==='meds'}}" scroll-y class="tab-body">
+
+    <!-- MP-22: 免疫抑制剂警示卡 -->
+    <view class="immu-alert">
+      <view class="immu-alert-row">
+        <text class="immu-warn-icon">⚠️</text>
+        <view class="immu-alert-body">
+          <view class="immu-alert-title">免疫抑制剂重要提示</view>
+          <view class="immu-alert-text">他克莫司、山替麦考酊酯等需每日固定时间服用，不可自行停药或调剑量。服药期间禁大黄汁和西柚。</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- MP-21: 药品列表 -->
+    <view class="card" style="margin:0 24rpx 0">
+      <view wx:for="{{medications}}" wx:key="name" class="med-item {{item.warn?'med-item-warn':''}}">
+        <view class="med-item-top">
+          <view class="med-name-row">
+            <text class="med-name">{{item.name}}</text>
+            <text wx:if="{{item.warn}}" class="med-warn-badge">⚠️ 高风险</text>
+          </view>
+          <view class="med-status-tag {{item.taken?'tag-taken':'tag-pending'}}">
+            {{item.taken?'今日已服':'待服用'}}
+          </view>
+        </view>
+        <view class="med-meta">
+          <view class="med-meta-item">💊 剂量：{{item.dose}}</view>
+          <view class="med-meta-item">⏰ 时间：{{item.time}}</view>
+        </view>
+        <view wx:if="{{item.warn}}" class="med-tip-box">
+          <text class="med-tip-text">{{item.warnTip}}</text>
+        </view>
+        <view class="med-action-row">
+          <button wx:if="{{!item.taken}}" class="btn-med-taken"
+                  bindtap="onMedTaken" data-name="{{item.name}}">
+            ✓ 标记已服
+          </button>
+          <view wx:else class="med-done-text">✓ 已于 {{item.takenAt}} 服用</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 注意事项 -->
+    <view class="card" style="margin:16rpx 24rpx 40rpx">
+      <view class="card-title-row">
+        <view class="card-dot"></view>
+        <view class="card-title">服药注意事项</view>
+      </view>
+      <view wx:for="{{medTips}}" wx:key="index" class="tip-row">
+        <view class="tip-index">{{index+1}}</view>
+        <view class="tip-text">{{item}}</view>
+      </view>
+    </view>
+
+  </scroll-view>
+
+  <!-- ======= 饮食打卡半屏弹窗 (MP-18) ======= -->
+  <view class="drawer-mask" wx:if="{{dietDrawer}}" bindtap="onCloseDiet"></view>
+  <view class="drawer {{dietDrawer?'drawer-show':''}}">
+    <view class="drawer-handle"></view>
+    <view class="drawer-head">
+      <view class="drawer-title">{{currentMeal.icon}} {{currentMeal.name}}记录</view>
+      <view class="drawer-close" bindtap="onCloseDiet">×</view>
+    </view>
+    <view class="drawer-body">
+      <!-- OCR 拍照识别区 -->
+      <view class="ocr-area">
+        <view class="ocr-btns">
+          <view class="ocr-btn" bindtap="onChoosePhoto" data-src="camera">
+            <text class="ocr-btn-icon">📷</text>
+            <text class="ocr-btn-text">拍照识别</text>
+          </view>
+          <view class="ocr-btn" bindtap="onChoosePhoto" data-src="album">
+            <text class="ocr-btn-icon">🖼️</text>
+            <text class="ocr-btn-text">从相册选择</text>
+          </view>
+        </view>
+        <view wx:if="{{ocrPhoto}}" class="ocr-preview-wrap">
+          <image class="ocr-preview" src="{{ocrPhoto}}" mode="widthFix"/>
+        </view>
+        <view wx:elif="{{!ocrLoading}}" class="ocr-placeholder">
+          <text class="ocr-placeholder-text">拍照或从相册选图，AI 自动识别食物内容</text>
+        </view>
+        <view wx:if="{{ocrLoading}}" class="ocr-loading">
+          <text class="ocr-loading-text">🔄 AI 识别中，请稍候...</text>
+        </view>
+        <view wx:elif="{{ocrSuccess}}" class="ocr-result-tip">
+          <text>✓ 识别成功，已填入下方描述框</text>
+        </view>
+        <view wx:elif="{{ocrError}}" class="ocr-result-tip ocr-result-error">
+          <text>{{ocrError}}</text>
+          <text class="ocr-retry-text" bindtap="onRetryOcr">重试</text>
+        </view>
+      </view>
+
+      <view class="drawer-field">
+        <view class="drawer-label">食物描述</view>
+        <textarea class="drawer-textarea"
+                  placeholder="如：米饭 150g、清蒸鱼 200g、豆腿汤一碗…"
+                  value="{{dietInput.foods}}" bindinput="onDietInput" data-field="foods"
+                  maxlength="200"/>
+      </view>
+      <view class="drawer-row2">
+        <view class="drawer-field half">
+          <view class="drawer-label">热量 (kcal)</view>
+          <input class="drawer-input" type="digit" placeholder="选填"
+                 value="{{dietInput.cal}}" bindinput="onDietInput" data-field="cal"/>
+        </view>
+        <view class="drawer-field half">
+          <view class="drawer-label">蛋白质 (g)</view>
+          <input class="drawer-input" type="digit" placeholder="选填"
+                 value="{{dietInput.protein}}" bindinput="onDietInput" data-field="protein"/>
+        </view>
+      </view>
+      <button class="btn-primary drawer-submit"
+              bindtap="onSubmitMeal" loading="{{mealLoading}}">
+        {{mealLoading?'AI 处理中...':'提交记录'}}
+      </button>
+    </view>
+  </view>
+
+</view>

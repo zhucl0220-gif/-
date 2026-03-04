@@ -1,0 +1,23 @@
+<view class="page">
+  <view class="header">
+    <text class="title">营养风险筛查</text>
+    <text class="sub">NRS 2002 简化评估</text>
+  </view>
+  <view wx:for="{{questions}}" wx:key="id" class="q-card">
+    <text class="q-text">{{item.question}}</text>
+    <view class="q-options">
+      <view
+        wx:for="{{item.options}}"
+        wx:for-item="option"
+        wx:key="value"
+        class="option {{item.selected === option.value ? 'selected' : ''}}"
+        bindtap="select"
+        data-qid="{{item.id}}"
+        data-val="{{option.value}}"
+      >{{option.label}}</view>
+    </view>
+  </view>
+  <view class="bottom-bar">
+    <button class="submit-btn" bindtap="submit">提交评估</button>
+  </view>
+</view>

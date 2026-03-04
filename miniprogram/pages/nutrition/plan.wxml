@@ -1,0 +1,67 @@
+<!-- pages/nutrition/plan.wxml 营养方案页 -->
+<view class="page">
+  <view class="header">
+    <text class="header-title">我的营养方案</text>
+    <text class="header-sub">{{plan ? plan.title : '暂无方案，请联系营养师'}}</text>
+  </view>
+
+  <block wx:if="{{plan}}">
+    <!-- 宏量营素目标 -->
+    <view class="section">
+      <text class="section-title">每日目标</text>
+      <view class="macro-grid">
+        <view class="macro-item">
+          <text class="macro-val">{{plan.energy_kcal}}</text>
+          <text class="macro-unit">kcal</text>
+          <text class="macro-label">热量</text>
+        </view>
+        <view class="macro-item">
+          <text class="macro-val">{{plan.protein_g}}</text>
+          <text class="macro-unit">g</text>
+          <text class="macro-label">蛋白质</text>
+        </view>
+        <view class="macro-item">
+          <text class="macro-val">{{plan.fat_g}}</text>
+          <text class="macro-unit">g</text>
+          <text class="macro-label">脂肪</text>
+        </view>
+        <view class="macro-item">
+          <text class="macro-val">{{plan.carb_g}}</text>
+          <text class="macro-unit">g</text>
+          <text class="macro-label">碳水</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 一日三餐参考 -->
+    <view class="section">
+      <text class="section-title">参考食谱</text>
+      <view wx:for="{{plan.meals}}" wx:key="type" class="meal-row">
+        <view class="meal-badge">{{item.type}}</view>
+        <text class="meal-desc">{{item.desc}}</text>
+      </view>
+    </view>
+
+    <!-- 饮食禁忌 -->
+    <view class="section">
+      <text class="section-title">饮食禁忌</text>
+      <view class="tag-wrap">
+        <view wx:for="{{plan.restrictions}}" wx:key="index" class="restrict-tag">{{item}}</view>
+      </view>
+    </view>
+
+    <!-- AI 备注 -->
+    <view class="section" wx:if="{{plan.agent_notes}}">
+      <text class="section-title">AI 营养师建议</text>
+      <text class="notes-text">{{plan.agent_notes}}</text>
+    </view>
+  </block>
+
+  <block wx:else>
+    <view class="empty-state">
+      <text class="empty-icon">🥗</text>
+      <text class="empty-text">暂无营养方案</text>
+      <text class="empty-sub">请联系您的营养师</text>
+    </view>
+  </block>
+</view>

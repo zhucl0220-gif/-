@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+dist/
+build/
+*.egg
+
+# 环境变量（含 API Key，不提交）
+backend/.env
+
+# 数据库 & 上传文件
+backend/uploads/
+*.db
+*.sqlite3
+
+# Node
+node_modules/
+frontend/dist/
+frontend/.env.local
+
+# 微信开发者工具
+miniapp/node_modules/
+
+# 系统文件
+.DS_Store
+Thumbs.db
+.vscode/settings.json
+
+# 日志
+*.log
+logs/

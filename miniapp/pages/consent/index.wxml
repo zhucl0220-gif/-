@@ -1,0 +1,115 @@
+<!-- pages/consent/index.wxml — 知情同意分步向导 (MP-01~05) · 阿福管家风 -->
+<view class="root">
+
+  <!-- 顶部 Banner -->
+  <view class="banner">
+    <view class="banner-logo">🏥</view>
+    <view class="banner-title">用户知情同意</view>
+    <view class="banner-sub">协和医院 · 肝移植营养管理系统</view>
+
+    <!-- 分步导航 -->
+    <view class="step-nav">
+      <block wx:for="{{steps}}" wx:key="index">
+        <view class="step-node {{currentStep > index ? 'done' : currentStep === index ? 'active' : 'idle'}}">
+          <view class="step-circle">
+            <text wx:if="{{currentStep > index}}" class="step-check">✓</text>
+            <text wx:else class="step-num">{{index + 1}}</text>
+          </view>
+          <text class="step-name">{{item.short}}</text>
+        </view>
+        <view class="step-connector" wx:if="{{index < steps.length - 1}}" />
+      </block>
+    </view>
+  </view>
+
+  <!-- 阻隔制内容区 -->
+  <!-- ══ 阶段 0~2：声明阅读 + 勾选 ══ -->
+  <view class="body" wx:if="{{currentStep < 3}}">
+
+    <!-- 说明卡片 -->
+    <view class="card doc-card">
+      <view class="doc-badge">{{currentStep + 1}}/3</view>
+      <view class="doc-card-title">{{steps[currentStep].title}}</view>
+
+      <scroll-view class="doc-scroll" scroll-y="true" bindscrolltolower="onScrollToBottom">
+        <text class="doc-text">{{steps[currentStep].content}}</text>
+        <view class="doc-end-mark">— 已阅读全文 —</view>
+      </scroll-view>
+
+      <!-- 勾选确认 -->
+      <view class="check-row" bindtap="onToggleCheck">
+        <view class="afu-checkbox {{checks[currentStep] ? 'checked' : ''}}">
+          <text wx:if="{{checks[currentStep]}}" class="check-icon">✓</text>
+        </view>
+        <text class="check-label">{{steps[currentStep].checkLabel}}</text>
+      </view>
+    </view>
+
+    <!-- 底部操作 -->
+    <view class="footer">
+      <button class="btn-ghost" wx:if="{{currentStep > 0}}" bindtap="onPrevStep">上一步</button>
+      <button
+        class="btn-primary {{currentStep > 0 ? 'half' : 'full'}} {{checks[currentStep] ? '' : 'disabled'}}"
+        disabled="{{!checks[currentStep]}}"
+        bindtap="onNextStep"
+      >
+        {{currentStep < 2 ? '同意并继续 →' : '同意并手写签名 →'}}
+      </button>
+    </view>
+  </view>
+
+  <!-- ══ 阶段 3：手写签名 (MP-03) ══ -->
+  <view class="body" wx:if="{{currentStep === 3}}">
+    <view class="card">
+      <view class="sign-heading">手写电子签名</view>
+      <view class="sign-desc">请在下方白色区域用手指书写您的姓名</view>
+
+      <view class="sign-canvas-wrap">
+        <canvas
+          type="2d"
+          id="signature-canvas"
+          canvas-id="signatureCanvas"
+          class="sign-canvas"
+          bindtouchstart="onSignStart"
+          bindtouchmove="onSignMove"
+          bindtouchend="onSignEnd"
+        />
+        <view class="sign-hint" wx:if="{{!hasSigned}}">↑ 请在此区域手写您的姓名</view>
+      </view>
+
+      <view class="sign-tool-row">
+        <button class="btn-clear" bindtap="onClearSign">清空重写</button>
+        <view class="sign-ok" wx:if="{{hasSigned}}">✔ 已完成签名</view>
+      </view>
+
+      <view class="sign-meta">
+        <view class="meta-row"><text class="meta-key">同意书版本：</text><text class="meta-val">2025-v2</text></view>
+        <view class="meta-row"><text class="meta-key">签署时间：</text><text class="meta-val">{{signTime || '待签署'}}</text></view>
+      </view>
+    </view>
+
+    <view class="footer">
+      <button class="btn-ghost half" bindtap="onPrevStep">上一步</button>
+      <button
+        class="btn-primary half {{hasSigned ? '' : 'disabled'}}"
+        disabled="{{!hasSigned}}"
+        loading="{{submitting}}"
+        bindtap="onSubmitConsent"
+      >确认提交签署</button>
+    </view>
+  </view>
+
+  <!-- ══ 阶段 4：完成 ══ -->
+  <view class="body done-body" wx:if="{{currentStep === 4}}">
+    <view class="done-circle">✓</view>
+    <view class="done-title">知情同意已完成</view>
+    <view class="done-desc">您已成功完成知情同意签署，现在可以使用全部功能。</view>
+    <view class="card done-info">
+      <view class="info-row"><text class="info-k">签署时间</text><text class="info-v">{{signTime}}</text></view>
+      <view class="info-row"><text class="info-k">同意书版本</text><text class="info-v">2025-v2</text></view>
+      <view class="info-row"><text class="info-k">状态</text><view class="tag-green">已生效</view></view>
+    </view>
+    <button class="btn-primary full mt24" bindtap="onEnterApp">进入系统 →</button>
+  </view>
+
+</view>

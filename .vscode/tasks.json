@@ -1,0 +1,19 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "启动后端 FastAPI",
+			"type": "shell",
+			"command": "cd e:\\工作用\\福鑫\\协和肝移植小程序\\projectyingy\\backend && e:\\工作用\\福鑫\\协和肝移植小程序\\projectyingy\\.venv\\Scripts\\uvicorn.exe app.main:app --host 127.0.0.1 --port 8000",
+			"isBackground": true,
+			"group": "build"
+		},
+		{
+			"label": "启动后端 FastAPI",
+			"type": "shell",
+			"command": "Set-Location 'e:\\工作用\\福鑫\\协和肝移植小程序\\projectyingy\\backend'; & 'e:\\工作用\\福鑫\\协和肝移植小程序\\projectyingy\\.venv\\Scripts\\uvicorn.exe' app.main:app --host 127.0.0.1 --port 8000",
+			"isBackground": true,
+			"group": "build"
+		}
+	]
+}

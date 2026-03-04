@@ -1,0 +1,813 @@
+/* ================================================================
+   肝移植营养管理系统 · 首页样式
+   设计原则（阿福管家风）：
+     1. 主色调  #00C7B2（医疗暖青）+ 辅助暖橙 #FF8C69
+     2. 背景    #F4F6F8（浅灰白），卡片纯白 #FFFFFF
+     3. 圆角    大卡片 32rpx，小元素 16rpx
+     4. 阴影    多层柔和阴影模拟悬浮感
+     5. 字体    系统黑体，行高宽松
+   ================================================================ */
+
+/* ── 设计 Token（伪变量，通过注释 & 复用保持一致性）──────────────
+   --color-primary    : #00C7B2
+   --color-primary-lt : #E6FAF8  (主色 10% 淡化背景)
+   --color-accent     : #FF8C69  (暖橙，警示/未完成)
+   --color-accent-lt  : #FFF1EC
+   --color-info       : #4A90E2
+   --color-info-lt    : #EBF3FF
+   --color-success    : #2ECC71
+   --color-bg         : #F4F6F8
+   --color-card       : #FFFFFF
+   --color-text-1     : #1A1A2E  (主文字)
+   --color-text-2     : #5A6478  (次要文字)
+   --color-text-3     : #A0A8B5  (占位/提示)
+   --shadow-card      : 0 4rpx 24rpx rgba(0,199,178,0.10), 0 1rpx 4rpx rgba(0,0,0,0.04)
+   --shadow-card-deep : 0 8rpx 32rpx rgba(0,199,178,0.15), 0 2rpx 8rpx rgba(0,0,0,0.06)
+   ────────────────────────────────────────────────────────── */
+
+/* ================================================================
+   全局容器
+   ================================================================ */
+.page-container {
+  min-height: 100vh;
+  background: #F4F6F8;
+  padding-bottom: 40rpx;
+}
+
+.status-bar-placeholder {
+  height: var(--window-top, 0);
+}
+
+/* ================================================================
+   Header 渐变区
+   ================================================================ */
+.header-bg {
+  background: linear-gradient(135deg, #00C7B2 0%, #00A896 60%, #0096A0 100%);
+  padding: 24rpx 32rpx 56rpx;    /* 下边多留出，与卡片重叠 */
+  position: relative;
+}
+
+.header-inner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.header-greeting {
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.4;
+}
+
+.header-name {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-top: 4rpx;
+  letter-spacing: 2rpx;
+}
+
+.header-avatar-wrap {
+  position: relative;
+}
+
+.header-avatar {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 50%;
+  border: 4rpx solid rgba(255, 255, 255, 0.6);
+  background: #E6FAF8;
+}
+
+.notification-dot {
+  position: absolute;
+  top: 2rpx;
+  right: 2rpx;
+  width: 18rpx;
+  height: 18rpx;
+  border-radius: 50%;
+  background: #FF5252;
+  border: 3rpx solid #FFFFFF;
+}
+
+/* ================================================================
+   通用卡片基础（.section-card）
+   ================================================================ */
+.section-card {
+  background: #FFFFFF;
+  border-radius: 32rpx;
+  margin: 0 24rpx 24rpx;
+  padding: 32rpx;
+  box-shadow:
+    0 4rpx 24rpx rgba(0, 199, 178, 0.10),
+    0 1rpx 4rpx rgba(0, 0, 0, 0.04);
+  position: relative;
+  overflow: hidden;
+}
+
+/* 所有卡片顶部装饰线 */
+.section-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 32rpx;
+  right: 32rpx;
+  height: 3rpx;
+  border-radius: 0 0 3rpx 3rpx;
+  background: linear-gradient(90deg, #00C7B2, transparent);
+  opacity: 0.3;
+}
+
+/* ================================================================
+   SECTION 1：用户信息卡片
+   ================================================================ */
+.user-card {
+  /* 负 margin-top 使卡片与 header 重叠，产生层叠感 */
+  margin-top: -32rpx;
+  padding: 28rpx 32rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0;
+  /* 加深阴影让悬浮感更强 */
+  box-shadow:
+    0 8rpx 32rpx rgba(0, 199, 178, 0.15),
+    0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+}
+
+.user-card::before {
+  display: none; /* 此卡片不需要顶部装饰线 */
+}
+
+/* 左侧天数大字 */
+.day-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 140rpx;
+}
+
+.day-number {
+  font-size: 72rpx;
+  font-weight: 800;
+  color: #00C7B2;
+  line-height: 1;
+  letter-spacing: -2rpx;
+}
+
+.day-label {
+  font-size: 22rpx;
+  color: #A0A8B5;
+  margin-top: 6rpx;
+  letter-spacing: 1rpx;
+}
+
+/* 竖向分隔线 */
+.divider-v {
+  width: 1rpx;
+  height: 80rpx;
+  background: linear-gradient(180deg, transparent, #E0E6ED, transparent);
+  margin: 0 28rpx;
+  flex-shrink: 0;
+}
+
+/* 右侧阶段信息 */
+.phase-block {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+}
+
+.phase-badge {
+  display: inline-flex;
+  align-items: center;
+  background: #E6FAF8;
+  border-radius: 100rpx;
+  padding: 6rpx 18rpx;
+  align-self: flex-start;
+}
+
+.phase-badge-text {
+  font-size: 22rpx;
+  font-weight: 600;
+  color: #00A896;
+}
+
+.phase-date {
+  font-size: 22rpx;
+  color: #A0A8B5;
+}
+
+.phase-tip {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 6rpx;
+  background: #FFFBF5;
+  border-radius: 12rpx;
+  padding: 10rpx 14rpx;
+  border-left: 4rpx solid #FFB347;
+}
+
+.phase-tip-icon {
+  font-size: 22rpx;
+  flex-shrink: 0;
+}
+
+.phase-tip-text {
+  font-size: 20rpx;
+  color: #7B6B52;
+  line-height: 1.5;
+  flex: 1;
+}
+
+/* 右上角箭头 */
+.card-arrow {
+  position: absolute;
+  top: 28rpx;
+  right: 28rpx;
+  font-size: 36rpx;
+  color: #C8D0DB;
+  font-weight: 300;
+}
+
+/* ================================================================
+   SECTION 2：康复进度卡片
+   ================================================================ */
+.progress-card {
+  /* 继承 .section-card */
+}
+
+.card-header-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28rpx;
+}
+
+.card-title-wrap {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.card-title-dot {
+  width: 10rpx;
+  height: 28rpx;
+  background: linear-gradient(180deg, #00C7B2, #00A896);
+  border-radius: 5rpx;
+}
+
+.card-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #1A1A2E;
+}
+
+.card-subtitle {
+  font-size: 22rpx;
+  color: #A0A8B5;
+}
+
+/* 进度条 */
+.progress-bar-wrap {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20rpx;
+  margin-bottom: 28rpx;
+}
+
+.progress-track {
+  flex: 1;
+  height: 16rpx;
+  background: #F0F3F6;
+  border-radius: 100rpx;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00C7B2, #4DD9CC);
+  border-radius: 100rpx;
+  transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+}
+
+.progress-animate {
+  animation: progressGrow 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes progressGrow {
+  from { width: 0 !important; }
+}
+
+/* 光晕效果 */
+.progress-glow {
+  position: absolute;
+  right: -4rpx;
+  top: -4rpx;
+  width: 24rpx;
+  height: 24rpx;
+  background: #FFFFFF;
+  border-radius: 50%;
+  border: 4rpx solid #00C7B2;
+  box-shadow: 0 0 12rpx rgba(0, 199, 178, 0.6);
+}
+
+.progress-percent-text {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #00C7B2;
+  min-width: 72rpx;
+  text-align: right;
+}
+
+/* 里程碑节点 */
+.milestone-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 28rpx;
+  position: relative;
+}
+
+/* 里程碑之间连接线 */
+.milestone-row::before {
+  content: "";
+  position: absolute;
+  top: 14rpx;
+  left: 14rpx;
+  right: 14rpx;
+  height: 2rpx;
+  background: #E0E6ED;
+  z-index: 0;
+}
+
+.milestone-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+  position: relative;
+  z-index: 1;
+}
+
+.milestone-dot {
+  width: 28rpx;
+  height: 28rpx;
+  border-radius: 50%;
+  background: #E0E6ED;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.milestone-done .milestone-dot {
+  background: #00C7B2;
+}
+
+.milestone-active .milestone-dot {
+  background: #FFFFFF;
+  border: 4rpx solid #00C7B2;
+  box-shadow: 0 0 0 6rpx rgba(0, 199, 178, 0.2);
+  width: 32rpx;
+  height: 32rpx;
+}
+
+.milestone-check {
+  font-size: 16rpx;
+  color: #FFFFFF;
+}
+
+.milestone-label {
+  font-size: 18rpx;
+  color: #A0A8B5;
+  white-space: nowrap;
+}
+
+.milestone-done .milestone-label,
+.milestone-active .milestone-label {
+  color: #00A896;
+  font-weight: 600;
+}
+
+/* 今日目标 Chip */
+.goal-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.goal-chip {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6rpx;
+  border-radius: 100rpx;
+  padding: 8rpx 20rpx;
+  border: 1rpx solid;
+}
+
+.goal-chip-done {
+  background: #E6FAF8;
+  border-color: #B2EDE7;
+}
+
+.goal-chip-todo {
+  background: #FFF8F5;
+  border-color: #FFD5C4;
+}
+
+.goal-chip-icon {
+  font-size: 22rpx;
+}
+
+.goal-chip-text {
+  font-size: 22rpx;
+  color: #5A6478;
+}
+
+/* ================================================================
+   SECTION 3：快捷入口大卡片网格
+   ================================================================ */
+.section-title-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8rpx 32rpx 16rpx;
+}
+
+.section-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #1A1A2E;
+}
+
+.section-more {
+  font-size: 24rpx;
+  color: #00C7B2;
+}
+
+.entry-grid {
+  display: flex;
+  flex-direction: row;
+  gap: 16rpx;
+  padding: 0 24rpx;
+  margin-bottom: 24rpx;
+}
+
+/* 入口卡片基础 */
+.entry-card {
+  flex: 1;
+  background: #FFFFFF;
+  border-radius: 28rpx;
+  padding: 28rpx 24rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 4rpx 20rpx rgba(0, 0, 0, 0.06),
+    0 1rpx 4rpx rgba(0, 0, 0, 0.03);
+  /* 原生点击态 */
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* 顶部彩色装饰条 */
+.entry-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6rpx;
+  border-radius: 28rpx 28rpx 0 0;
+}
+
+.entry-card-warning::before {
+  background: linear-gradient(90deg, #FF8C69, #FFB347);
+}
+
+.entry-card-info::before {
+  background: linear-gradient(90deg, #4A90E2, #7BB8F0);
+}
+
+.entry-card-done::before {
+  background: linear-gradient(90deg, #00C7B2, #4DD9CC);
+}
+
+/* 卡片被点击时的微缩动画 */
+.entry-card:active {
+  transform: scale(0.97);
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.08);
+}
+
+/* 状态角标 */
+.entry-badge {
+  position: absolute;
+  top: 20rpx;
+  right: 20rpx;
+  border-radius: 100rpx;
+  padding: 4rpx 14rpx;
+}
+
+.badge-pending {
+  background: #FFF1EC;
+}
+
+.badge-done {
+  background: #E6FAF8;
+}
+
+.badge-new {
+  background: #FDECEA;
+}
+
+.entry-badge-text {
+  font-size: 18rpx;
+  font-weight: 600;
+  color: #FF6B4A;
+}
+
+.badge-done .entry-badge-text {
+  color: #00A896;
+}
+
+.badge-new .entry-badge-text {
+  color: #E53935;
+}
+
+/* 图标背景 */
+.entry-icon-wrap {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4rpx;
+}
+
+.entry-icon-bg-green {
+  background: linear-gradient(135deg, #E6FAF8, #B2EDE8);
+}
+
+.entry-icon-bg-blue {
+  background: linear-gradient(135deg, #EBF3FF, #C5DEFF);
+}
+
+.entry-icon {
+  font-size: 42rpx;
+}
+
+/* 卡片文字 */
+.entry-card-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #1A1A2E;
+}
+
+.entry-card-desc {
+  font-size: 22rpx;
+  color: #A0A8B5;
+  line-height: 1.5;
+}
+
+/* 底部操作行 */
+.entry-action-row {
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+  margin-top: 8rpx;
+}
+
+.entry-btn {
+  width: 100%;
+  height: 64rpx;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.entry-btn-primary {
+  background: linear-gradient(135deg, #FF8C69, #FF6B4A);
+  box-shadow: 0 4rpx 16rpx rgba(255, 107, 74, 0.4);
+}
+
+.entry-btn-done {
+  background: linear-gradient(135deg, #00C7B2, #00A896);
+  box-shadow: 0 4rpx 16rpx rgba(0, 199, 178, 0.3);
+}
+
+.entry-btn-secondary {
+  background: linear-gradient(135deg, #4A90E2, #3478C8);
+  box-shadow: 0 4rpx 16rpx rgba(74, 144, 226, 0.4);
+}
+
+.entry-btn-text {
+  font-size: 24rpx;
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: 1rpx;
+}
+
+.entry-time {
+  font-size: 20rpx;
+  color: #C4CBD6;
+  text-align: center;
+}
+
+/* ================================================================
+   SECTION 4：营养速览横向滚动
+   ================================================================ */
+.nutrition-scroll {
+  width: 100%;
+  padding: 0;
+  margin-bottom: 24rpx;
+}
+
+.nutrition-cards-row {
+  display: flex;
+  flex-direction: row;
+  padding: 4rpx 24rpx 16rpx;
+  gap: 16rpx;
+  width: max-content;
+}
+
+/* 小型营养卡片 */
+.mini-card {
+  width: 180rpx;
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  padding: 24rpx 20rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+  box-shadow:
+    0 4rpx 16rpx rgba(0, 0, 0, 0.05),
+    0 1rpx 3rpx rgba(0, 0, 0, 0.03);
+}
+
+.mini-card-icon-wrap {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4rpx;
+}
+
+.mini-card-icon {
+  font-size: 30rpx;
+}
+
+.mini-card-value {
+  font-size: 34rpx;
+  font-weight: 800;
+  color: #1A1A2E;
+  line-height: 1;
+}
+
+.mini-card-unit {
+  font-size: 20rpx;
+  font-weight: 400;
+  color: #A0A8B5;
+  margin-left: 2rpx;
+}
+
+.mini-card-label {
+  font-size: 20rpx;
+  color: #A0A8B5;
+}
+
+/* 小进度条 */
+.mini-progress-track {
+  width: 100%;
+  height: 6rpx;
+  background: #F0F3F6;
+  border-radius: 100rpx;
+  overflow: hidden;
+}
+
+.mini-progress-fill {
+  height: 100%;
+  border-radius: 100rpx;
+  transition: width 0.6s ease;
+}
+
+.mini-progress-tip {
+  font-size: 18rpx;
+  color: #C4CBD6;
+}
+
+/* ================================================================
+   SECTION 5：医生消息卡片
+   ================================================================ */
+.doctor-msg-card {
+  background: #FFFFFF;
+  border-radius: 28rpx;
+  margin: 0 24rpx 24rpx;
+  padding: 24rpx 28rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20rpx;
+  box-shadow:
+    0 4rpx 20rpx rgba(0, 0, 0, 0.06),
+    0 1rpx 4rpx rgba(0, 0, 0, 0.03);
+  border-left: 6rpx solid #00C7B2;
+}
+
+.doctor-msg-left {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.doctor-avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  background: #E6FAF8;
+}
+
+.doctor-msg-online-dot {
+  position: absolute;
+  bottom: 2rpx;
+  right: 2rpx;
+  width: 18rpx;
+  height: 18rpx;
+  border-radius: 50%;
+  background: #2ECC71;
+  border: 3rpx solid #FFFFFF;
+}
+
+.doctor-msg-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.doctor-msg-top {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4rpx;
+}
+
+.doctor-name {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: #1A1A2E;
+}
+
+.doctor-role {
+  font-size: 22rpx;
+  color: #A0A8B5;
+}
+
+.doctor-msg-time {
+  font-size: 20rpx;
+  color: #C4CBD6;
+  margin-left: auto;
+}
+
+.doctor-msg-text {
+  font-size: 24rpx;
+  color: #5A6478;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.doctor-msg-arrow {
+  font-size: 36rpx;
+  color: #C4CBD6;
+  flex-shrink: 0;
+}
+
+/* ================================================================
+   底部安全区
+   ================================================================ */
+.safe-area-bottom {
+  height: env(safe-area-inset-bottom, 40rpx);
+  min-height: 40rpx;
+}

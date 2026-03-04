@@ -1,0 +1,29 @@
+<view class="page">
+  <view class="header">
+    <text class="header-title">饮食打卡</text>
+    <text class="header-sub">记录每餐，AI评估依从性</text>
+  </view>
+  <view class="today-section">
+    <view class="today-header">
+      <text class="today-title">今日打卡</text>
+      <text class="today-date">{{today}}</text>
+    </view>
+    <view class="meal-btns">
+      <view wx:for="{{mealTypes}}" wx:key="value" class="meal-btn {{item.done ? 'done' : ''}}" bindtap="recordMeal" data-type="{{item.value}}">
+        <text class="meal-emoji">{{item.emoji}}</text>
+        <text class="meal-name">{{item.label}}</text>
+        <text wx:if="{{item.done}}" class="check-mark">✓</text>
+      </view>
+    </view>
+  </view>
+  <view class="section">
+    <text class="section-title">最近记录</text>
+    <view wx:for="{{records}}" wx:key="id" class="record-item">
+      <view class="record-left">
+        <text class="record-meal">{{item.meal_type}}</text>
+        <text class="record-date">{{item.record_date}}</text>
+      </view>
+      <view class="score-badge {{item.score >= 80 ? 'good' : 'warn'}}">依从{{item.score}}%</view>
+    </view>
+  </view>
+</view>

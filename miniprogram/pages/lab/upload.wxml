@@ -1,0 +1,59 @@
+<!-- pages/lab/upload.wxml 化验单上传页 -->
+<view class="page">
+  <view class="header">
+    <text class="header-title">上传化验单</text>
+    <text class="header-sub">AI 自动识别并分析您的检验结果</text>
+  </view>
+
+  <!-- 上传区域 -->
+  <view class="upload-area" bindtap="chooseImage">
+    <block wx:if="{{!imageUrl}}">
+      <image class="upload-icon" src="/assets/icons/upload.png" mode="aspectFit"/>
+      <text class="upload-text">点击拍照或从相册选择</text>
+      <text class="upload-hint">支持 JPG / PNG，最大 10MB</text>
+    </block>
+    <block wx:else>
+      <image class="preview-img" src="{{imageUrl}}" mode="aspectFit"/>
+      <view class="reselect-btn" catchtap="chooseImage">重新选择</view>
+    </block>
+  </view>
+
+  <!-- 报告类型选择 -->
+  <view class="section">
+    <text class="section-title">报告类型</text>
+    <view class="type-list">
+      <view
+        wx:for="{{reportTypes}}"
+        wx:key="value"
+        class="type-chip {{selectedType === item.value ? 'active' : ''}}"
+        bindtap="selectType"
+        data-value="{{item.value}}"
+      >{{item.label}}</view>
+    </view>
+  </view>
+
+  <!-- 分析结果 -->
+  <view class="result-card" wx:if="{{result}}">
+    <view class="result-header">
+      <text class="result-title">AI 分析结果</text>
+      <view class="risk-tag {{result.risk_level}}">{{result.risk_text}}</view>
+    </view>
+    <view class="result-summary">{{result.summary}}</view>
+    <view wx:for="{{result.recommendations}}" wx:key="index" class="rec-item">
+      <text class="rec-dot">•</text>
+      <text class="rec-text">{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="bottom-bar">
+    <button
+      class="submit-btn {{loading ? 'loading' : ''}}"
+      bindtap="submit"
+      disabled="{{!imageUrl || loading}}"
+    >
+      <text wx:if="{{!loading}}">立即识别分析</text>
+      <text wx:else>分析中...</text>
+    </button>
+  </view>
+</view>

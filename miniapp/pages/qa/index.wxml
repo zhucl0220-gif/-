@@ -1,0 +1,88 @@
+<!-- pages/qa/index.wxml -->
+<view class="qa-root">
+
+  <!-- 固定免责声明栏 -->
+  <view class="disclaimer-bar">
+    <text class="disclaimer-icon">⚠️</text>
+    <text class="disclaimer-text">仅供营养参考，不替代医嘱。紧急情况请立即联系医生。</text>
+  </view>
+
+  <!-- 聊天滚动区 -->
+  <scroll-view class="chat-scroll" scroll-y scroll-into-view="{{scrollToId}}"
+               scroll-with-animation enhanced throttle="16">
+    <view class="chat-inner">
+
+      <!-- 欢迎页（无消息时） -->
+      <view class="welcome-wrap" wx:if="{{messages.length === 0}}">
+        <view class="welcome-card">
+          <text class="welcome-icon">🤖</text>
+          <text class="welcome-title">阿福营养助手</text>
+          <text class="welcome-sub">我是您的专属营养问答助手，可回答肝移植术后饮食与营养相关问题。</text>
+        </view>
+        <!-- 快捷提问 -->
+        <view class="quick-q-label">💡 常见问题</view>
+        <scroll-view class="quick-q-scroll" scroll-x>
+          <view class="quick-q-list">
+            <view class="quick-q-item" wx:for="{{quickQuestions}}" wx:key="*this"
+                  bindtap="onQuickQ" data-text="{{item}}">{{item}}</view>
+          </view>
+        </scroll-view>
+      </view>
+
+      <!-- 消息列表 -->
+      <view class="msg-row {{item.role==='user' ? 'msg-user' : 'msg-ai'}}"
+            wx:for="{{messages}}" wx:key="id" wx:for-item="item">
+
+        <!-- AI 头像 -->
+        <view class="msg-avatar ai-avatar" wx:if="{{item.role === 'ai'}}">
+          <text>🤖</text>
+        </view>
+
+        <!-- 气泡 -->
+        <view class="msg-bubble {{item.role==='user' ? 'bubble-user' : (item.outOfScope ? 'bubble-oos' : 'bubble-ai')}}">
+          <!-- 超范围拒绝 -->
+          <view class="oos-wrap" wx:if="{{item.outOfScope}}">
+            <text class="oos-text">⚠️ 该问题超出营养建议范畴，请咨询您的主治医生或营养师。</text>
+            <navigator class="oos-btn" url="/pages/faq/index">查看常见症状解析 →</navigator>
+          </view>
+          <!-- 正常文字 / 打字机 -->
+          <view wx:else>
+            <text class="bubble-text">{{item.displayContent || item.content}}</text>
+            <text class="msg-time">{{item.time}}</text>
+          </view>
+        </view>
+
+        <!-- 用户头像 -->
+        <view class="msg-avatar user-avatar" wx:if="{{item.role === 'user'}}">
+          <text>😊</text>
+        </view>
+
+      </view>
+
+      <!-- AI 加载动画 -->
+      <view class="msg-row msg-ai" wx:if="{{loading}}">
+        <view class="msg-avatar ai-avatar"><text>🤖</text></view>
+        <view class="msg-bubble bubble-ai">
+          <view class="typing-dots">
+            <view class="dot dot1"></view>
+            <view class="dot dot2"></view>
+            <view class="dot dot3"></view>
+          </view>
+        </view>
+      </view>
+
+      <view class="scroll-anchor" id="msg_anchor"></view>
+    </view>
+  </scroll-view>
+
+  <!-- 底部输入栏 -->
+  <view class="input-bar">
+    <input class="msg-input" placeholder="输入问题…" value="{{inputText}}"
+           bindinput="onInput" confirm-type="send" bindconfirm="onSend"
+           placeholder-style="color:#bbb;"/>
+    <view class="send-btn {{inputText ? '' : 'send-btn-disabled'}}" bindtap="onSend">
+      <text class="send-icon">➤</text>
+    </view>
+  </view>
+
+</view>

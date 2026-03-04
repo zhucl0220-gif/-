@@ -1,0 +1,152 @@
+<!-- pages/profile/index.wxml — MP-28~30 阿福管家风 -->
+<view class="page-root">
+
+  <!-- ══ 就诊卡式头部卡片 ══ -->
+  <view class="card-bg">
+    <view class="id-card">
+      <!-- 卡片徽标行 -->
+      <view class="card-top-row">
+        <view class="card-hospital">
+          <text class="hospital-icon">🏥</text>
+          <text class="hospital-name">协和医院肝移植中心</text>
+        </view>
+        <text class="card-label">就诊卡</text>
+      </view>
+      <!-- 芯片 + 姓名区 -->
+      <view class="card-mid-row">
+        <view class="chip-wrap">
+          <view class="chip"></view>
+        </view>
+        <view class="card-patient-info">
+          <text class="card-patient-name">{{patientInfo.name || '未填写姓名'}}</text>
+          <text class="card-patient-sub">{{patientInfo.gender || '--'}} · {{patientInfo.age || '--'}}岁</text>
+        </view>
+        <view class="edit-btn-card" bindtap="onEditInfo">编辑</view>
+      </view>
+      <!-- 底部标签行 -->
+      <view class="card-bottom-row">
+        <view class="card-tag phase-tag-card">{{phaseText}}</view>
+        <view class="card-tag risk-tag-card risk-{{riskLevel}}">{{riskText}}</view>
+        <view class="card-id">ID: {{patientInfo.patientId || '--'}}</view>
+      </view>
+      <!-- 卡片装饰圆 -->
+      <view class="card-circle-1"></view>
+      <view class="card-circle-2"></view>
+    </view>
+  </view>
+
+  <!-- ══ Tab 栏 ══ -->
+  <view class="tab-bar">
+    <view class="tab-item {{activeTab==='info'   ?'tab-active':''}}" bindtap="onTab" data-tab="info">档案</view>
+    <view class="tab-item {{activeTab==='report' ?'tab-active':''}}" bindtap="onTab" data-tab="report">报告</view>
+    <view class="tab-item {{activeTab==='trend'  ?'tab-active':''}}" bindtap="onTab" data-tab="trend">趋势图</view>
+  </view>
+
+  <!-- ══ 档案 Tab ══ -->
+  <scroll-view wx:if="{{activeTab==='info'}}" scroll-y class="tab-body">
+    <view class="card mx24 mt24">
+      <view class="section-hd"><text class="section-bar"></text><text class="card-title">基本信息</text></view>
+      <view wx:for="{{basicFields}}" wx:key="key" class="info-row">
+        <text class="info-label">{{item.label}}</text>
+        <view wx:if="{{editMode}}">
+          <picker wx:if="{{item.type==='picker'}}" mode="selector" range="{{item.options}}"
+                  value="{{item.pickerIdx}}" bindchange="onPickerChange" data-key="{{item.key}}">
+            <text class="info-val-edit">{{formData[item.key] || '请选择'}}</text>
+          </picker>
+          <input wx:else class="info-input" type="{{item.inputType||'text'}}"
+                 value="{{formData[item.key]}}" placeholder="{{item.placeholder}}"
+                 bindinput="onFormInput" data-key="{{item.key}}"/>
+        </view>
+        <text wx:else class="info-val">{{patientInfo[item.key] || '--'}}</text>
+      </view>
+    </view>
+
+    <view class="card mx24 mt16">
+      <view class="section-hd"><text class="section-bar"></text><text class="card-title">手术信息</text></view>
+      <view wx:for="{{surgeryFields}}" wx:key="key" class="info-row">
+        <text class="info-label">{{item.label}}</text>
+        <view wx:if="{{editMode}}">
+          <picker wx:if="{{item.type==='date'}}" mode="date" value="{{formData[item.key]}}"
+                  bindchange="onDateChange" data-key="{{item.key}}">
+            <text class="info-val-edit">{{formData[item.key] || '请选择日期'}}</text>
+          </picker>
+          <input wx:else class="info-input" value="{{formData[item.key]}}"
+                 placeholder="{{item.placeholder}}" bindinput="onFormInput" data-key="{{item.key}}"/>
+        </view>
+        <text wx:else class="info-val">{{patientInfo[item.key] || '--'}}</text>
+      </view>
+    </view>
+
+    <view class="action-row mx24 mt20" wx:if="{{editMode}}">
+      <button class="btn-secondary" bindtap="onCancelEdit">取消</button>
+      <button class="btn-primary" bindtap="onSaveInfo" loading="{{saving}}">
+        {{saving?'保存中...':'保存档案'}}
+      </button>
+    </view>
+  </scroll-view>
+
+  <!-- ══ 报告 Tab ══ -->
+  <scroll-view wx:if="{{activeTab==='report'}}" scroll-y class="tab-body">
+    <view class="empty-tip mt40" wx:if="{{reports.length===0}}">暂无报告，完成营养评估后将自动生成 📋</view>
+    <view wx:for="{{reports}}" wx:key="id" class="report-item card mx24 mt16"
+          bindtap="onOpenReport" data-id="{{item.id}}">
+      <view class="report-item-header">
+        <view>
+          <view class="report-title">{{item.title}}</view>
+          <view class="report-date">{{item.date}}</view>
+        </view>
+        <view class="report-risk risk-{{item.riskLevel}}">{{item.riskText}}</view>
+      </view>
+      <view class="report-summary">{{item.summary}}</view>
+      <view class="report-footer"><text class="report-arrow">查看详情 ›</text></view>
+    </view>
+  </scroll-view>
+
+  <!-- ══ 趋势图 Tab (MP-30) ══ -->
+  <scroll-view wx:if="{{activeTab==='trend'}}" scroll-y class="tab-body">
+
+    <!-- Canvas 双折线图 -->
+    <view class="card mx24 mt24">
+      <view class="card-title-row">
+        <view class="section-hd"><text class="section-bar"></text><text class="card-title">白蛋白 × 体重 趋势</text></view>
+      </view>
+      <view class="chart-legend-row">
+        <view class="legend-item"><view class="legend-line alb-line"></view><text>白蛋白 (g/L)</text></view>
+        <view class="legend-item"><view class="legend-line wt-line"></view><text>体重 (kg)</text></view>
+        <view class="legend-item"><view class="legend-band"></view><text>正常区间</text></view>
+      </view>
+      <view class="canvas-wrap" id="canvasWrap">
+        <canvas type="2d" id="dualChart" class="dual-canvas"></canvas>
+        <view class="chart-empty" wx:if="{{chartEmpty}}">暂无趋势数据，请先录入检验指标</view>
+      </view>
+    </view>
+
+    <!-- 统计摘要 -->
+    <view class="card mx24 mt16" wx:if="{{chartStats && chartStats.length}}">
+      <view class="section-hd"><text class="section-bar"></text><text class="card-title">最新数值</text></view>
+      <view class="stat-grid">
+        <view class="stat-card" wx:for="{{chartStats}}" wx:key="label">
+          <text class="stat-label">{{item.label}}</text>
+          <text class="stat-val text-{{item.status}}">{{item.value}}</text>
+          <text class="stat-unit">{{item.unit}}</text>
+          <text class="stat-ref">参考: {{item.ref}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 体重条形历史 -->
+    <view class="card mx24 mt16">
+      <view class="section-hd"><text class="section-bar"></text><text class="card-title">历史体重记录</text></view>
+      <view wx:if="{{weightHistory.length===0}}" class="empty-tip">暂无体重记录</view>
+      <view wx:for="{{weightHistory}}" wx:key="date" class="weight-row">
+        <text class="weight-date">{{item.date}}</text>
+        <view class="weight-bar-bg">
+          <view class="weight-bar-fill" style="width:{{item.pct}}%"></view>
+        </view>
+        <text class="weight-val">{{item.value}} kg</text>
+      </view>
+    </view>
+
+  </scroll-view>
+
+</view>

@@ -1,0 +1,54 @@
+# ── Web 框架 ─────────────────────────────────────────────────
+fastapi==0.115.6
+uvicorn[standard]==0.32.1
+python-multipart==0.0.20          # 文件上传支持
+
+# ── 数据库 ───────────────────────────────────────────────────
+sqlalchemy==2.0.36
+asyncpg==0.30.0                   # 异步 PostgreSQL 驱动
+alembic==1.14.0                   # 数据库迁移
+
+# ── Pydantic / 配置 ──────────────────────────────────────────
+pydantic==2.10.4
+pydantic-settings==2.7.0
+
+# ── 认证 ────────────────────────────────────────────────────
+python-jose[cryptography]==3.3.0  # JWT
+passlib[bcrypt]==1.7.4            # 密码哈希
+
+# ── AI / LLM ─────────────────────────────────────────────────
+openai==1.58.1                    # OpenAI SDK（兼容任何 OpenAI-format API）
+langchain==0.3.14                 # Agent 框架（可选，也可直接用 openai）
+langchain-openai==0.3.0
+
+# ── OCR ─────────────────────────────────────────────────────
+# paddleocr==2.9.1               # 与 numpy>=2.0 冲突，需单独 pip install paddlepaddle paddleocr
+Pillow==11.0.0
+
+# ── 文件处理 ─────────────────────────────────────────────────
+reportlab==4.2.5                  # PDF 生成（知情同意书）
+pypdf==5.1.0                      # PDF 读取与合并（签名叠加）
+python-docx==1.1.2                # Word 文档处理
+aiofiles==24.1.0                  # 异步文件 I/O
+
+# ── HTTP 客户端（WebSearch / 外部 API）────────────────────────
+httpx==0.27.2
+aiohttp==3.11.11
+
+# ── 数据科学（沙箱工具可用库）────────────────────────────────
+numpy>=2.0                        # Python 3.13 需要 2.x 预编译包
+pandas==2.2.3
+matplotlib==3.10.0
+scipy==1.15.1
+seaborn==0.13.2
+
+# ── 工具 ────────────────────────────────────────────────────
+python-dotenv==1.0.1
+orjson==3.10.12                   # 高性能 JSON 序列化
+redis==5.2.1                      # 任务队列 / 缓存
+celery==5.4.0                     # 后台任务（Agent 异步执行）
+openpyxl==3.1.5                   # Excel 导出
+
+# ── 开发 / 测试 ──────────────────────────────────────────────
+pytest==8.3.4
+pytest-asyncio==0.24.0

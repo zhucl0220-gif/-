@@ -1,0 +1,233 @@
+<!-- ─────────────────────────────────────────────────────────────── -->
+<!-- 肝移植营养管理系统 · 首页 (Dashboard)                         -->
+<!-- 风格：阿福管家 — 医疗暖青色 · 大卡片 · 大圆角 · 柔和阴影      -->
+<!-- ─────────────────────────────────────────────────────────────── -->
+<view class="page-container">
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- 顶部安全区占位                                               -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <view class="status-bar-placeholder"></view>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- 顶部渐变 Header                                              -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <view class="header-bg">
+    <view class="header-inner">
+      <view class="header-left">
+        <text class="header-greeting">早上好 👋</text>
+        <text class="header-name">{{userInfo.name}}</text>
+      </view>
+      <view class="header-avatar-wrap">
+        <image class="header-avatar" src="{{userInfo.avatar}}" mode="aspectFill" />
+        <view class="notification-dot" wx:if="{{hasNotification}}"></view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- SECTION 1：用户信息卡片（术后天数 + 当前阶段）              -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <view class="section-card user-card" bindtap="onUserCardTap">
+    <!-- 左侧：天数大数字 -->
+    <view class="day-block">
+      <text class="day-number">{{postOpDays}}</text>
+      <text class="day-label">术后天数</text>
+    </view>
+
+    <!-- 中间分隔线 -->
+    <view class="divider-v"></view>
+
+    <!-- 右侧：阶段信息 -->
+    <view class="phase-block">
+      <view class="phase-badge">
+        <text class="phase-badge-text">{{currentPhase.label}}</text>
+      </view>
+      <text class="phase-date">移植日期 {{transplantDate}}</text>
+      <view class="phase-tip">
+        <text class="phase-tip-icon">💡</text>
+        <text class="phase-tip-text">{{currentPhase.tip}}</text>
+      </view>
+    </view>
+
+    <!-- 右上角箭头 -->
+    <view class="card-arrow">›</view>
+  </view>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- SECTION 2：康复进度卡片                                      -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <view class="section-card progress-card">
+    <!-- 标题行 -->
+    <view class="card-header-row">
+      <view class="card-title-wrap">
+        <view class="card-title-dot"></view>
+        <text class="card-title">康复进度</text>
+      </view>
+      <text class="card-subtitle">{{currentPhase.label}} · 第 {{phaseDay}} 天</text>
+    </view>
+
+    <!-- 主进度条 -->
+    <view class="progress-bar-wrap">
+      <view class="progress-track">
+        <view
+          class="progress-fill {{progressAnimate ? 'progress-animate' : ''}}"
+          style="width: {{progressPercent}}%;"
+        >
+          <view class="progress-glow"></view>
+        </view>
+      </view>
+      <text class="progress-percent-text">{{progressPercent}}%</text>
+    </view>
+
+    <!-- 阶段里程碑节点 -->
+    <view class="milestone-row">
+      <view
+        class="milestone-item {{item.done ? 'milestone-done' : ''}} {{item.active ? 'milestone-active' : ''}}"
+        wx:for="{{milestones}}"
+        wx:key="id"
+      >
+        <view class="milestone-dot">
+          <text class="milestone-check" wx:if="{{item.done}}">✓</text>
+          <text class="milestone-dot-inner" wx:else></text>
+        </view>
+        <text class="milestone-label">{{item.label}}</text>
+      </view>
+    </view>
+
+    <!-- 今日目标达成小标签 -->
+    <view class="goal-row">
+      <view class="goal-chip {{item.done ? 'goal-chip-done' : 'goal-chip-todo'}}"
+            wx:for="{{todayGoals}}" wx:key="id">
+        <text class="goal-chip-icon">{{item.done ? '✅' : '⭕'}}</text>
+        <text class="goal-chip-text">{{item.label}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- SECTION 3：快捷入口大卡片区                                  -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <view class="section-title-row">
+    <text class="section-title">今日待办</text>
+    <text class="section-more" bindtap="onViewAll">全部 ›</text>
+  </view>
+
+  <view class="entry-grid">
+
+    <!-- 卡片 A：营养筛查 -->
+    <view
+      class="entry-card entry-card-warning {{nutritionScreening.done ? 'entry-card-done' : ''}}"
+      bindtap="onNutritionScreeningTap"
+    >
+      <!-- 状态角标 -->
+      <view class="entry-badge {{nutritionScreening.done ? 'badge-done' : 'badge-pending'}}">
+        <text class="entry-badge-text">
+          {{nutritionScreening.done ? '已完成' : '今日未做'}}
+        </text>
+      </view>
+
+      <!-- 图标区 -->
+      <view class="entry-icon-wrap entry-icon-bg-green">
+        <text class="entry-icon">🥗</text>
+      </view>
+
+      <!-- 文字区 -->
+      <text class="entry-card-title">营养筛查</text>
+      <text class="entry-card-desc">
+        {{nutritionScreening.done ? '今日已完成评估' : '需约 3 分钟完成'}}
+      </text>
+
+      <!-- 底部操作行 -->
+      <view class="entry-action-row">
+        <view class="entry-btn {{nutritionScreening.done ? 'entry-btn-done' : 'entry-btn-primary'}}">
+          <text class="entry-btn-text">
+            {{nutritionScreening.done ? '查看报告' : '立即填写'}}
+          </text>
+        </view>
+        <text class="entry-time">{{nutritionScreening.lastTime || '—'}}</text>
+      </view>
+    </view>
+
+    <!-- 卡片 B：上传化验单 -->
+    <view
+      class="entry-card entry-card-info"
+      bindtap="onUploadLabTap"
+    >
+      <!-- 状态角标（有新结果时显示红点） -->
+      <view class="entry-badge badge-new" wx:if="{{labResult.hasNew}}">
+        <text class="entry-badge-text">有新结果</text>
+      </view>
+
+      <!-- 图标区 -->
+      <view class="entry-icon-wrap entry-icon-bg-blue">
+        <text class="entry-icon">🧪</text>
+      </view>
+
+      <!-- 文字区 -->
+      <text class="entry-card-title">上传化验单</text>
+      <text class="entry-card-desc">AI 智能解读指标</text>
+
+      <!-- 底部操作行 -->
+      <view class="entry-action-row">
+        <view class="entry-btn entry-btn-secondary">
+          <text class="entry-btn-text">拍照上传</text>
+        </view>
+        <text class="entry-time">{{labResult.lastTime || '暂无记录'}}</text>
+      </view>
+    </view>
+
+  </view>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- SECTION 4：营养数据速览（横向滚动小卡片）                    -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <view class="section-title-row">
+    <text class="section-title">今日营养速览</text>
+    <text class="section-more" bindtap="onViewNutrition">详情 ›</text>
+  </view>
+
+  <scroll-view class="nutrition-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+    <view class="nutrition-cards-row">
+
+      <view class="mini-card" wx:for="{{nutritionStats}}" wx:key="id">
+        <view class="mini-card-icon-wrap" style="background:{{item.bgColor}}">
+          <text class="mini-card-icon">{{item.icon}}</text>
+        </view>
+        <text class="mini-card-value">{{item.value}}<text class="mini-card-unit">{{item.unit}}</text></text>
+        <text class="mini-card-label">{{item.label}}</text>
+        <!-- 与目标对比小进度线 -->
+        <view class="mini-progress-track">
+          <view class="mini-progress-fill" style="width:{{item.percent}}%; background:{{item.color}};"></view>
+        </view>
+        <text class="mini-progress-tip">目标 {{item.target}}{{item.unit}}</text>
+      </view>
+
+    </view>
+  </scroll-view>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- SECTION 5：医生消息提醒                                      -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <view class="doctor-msg-card" wx:if="{{doctorMsg}}" bindtap="onDoctorMsgTap">
+    <view class="doctor-msg-left">
+      <image class="doctor-avatar" src="{{doctorMsg.avatar}}" mode="aspectFill" />
+      <view class="doctor-msg-online-dot"></view>
+    </view>
+    <view class="doctor-msg-body">
+      <view class="doctor-msg-top">
+        <text class="doctor-name">{{doctorMsg.name}}</text>
+        <text class="doctor-role">· {{doctorMsg.role}}</text>
+        <text class="doctor-msg-time">{{doctorMsg.time}}</text>
+      </view>
+      <text class="doctor-msg-text">{{doctorMsg.content}}</text>
+    </view>
+    <view class="doctor-msg-arrow">›</view>
+  </view>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- 底部安全区                                                   -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <view class="safe-area-bottom"></view>
+
+</view>

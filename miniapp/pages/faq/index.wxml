@@ -1,0 +1,59 @@
+<!-- pages/faq/index.wxml -->
+<view class="page-root">
+
+  <!-- 搜索框 -->
+  <view class="search-wrap pad24 mt20">
+    <view class="search-bar">
+      <text class="search-icon">🔍</text>
+      <input class="search-input" placeholder="搜索症状关键词…" bindinput="onSearch"
+             value="{{keyword}}" placeholder-style="color:#bbb;" confirm-type="search"/>
+    </view>
+  </view>
+
+  <!-- 8 格图标导航 -->
+  <view class="grid-nav pad24 mt16">
+    <view class="grid-item {{selectedItem && selectedItem.id===item.id ? 'grid-active' : ''}}"
+          wx:for="{{filteredItems}}" wx:key="id"
+          bindtap="onSelectSymptom" data-id="{{item.id}}">
+      <text class="grid-emoji">{{item.icon}}</text>
+      <text class="grid-name">{{item.name}}</text>
+      <view class="grid-risk risk-{{item.risk}}">{{item.riskText}}</view>
+    </view>
+    <view class="empty-tip" wx:if="{{filteredItems.length === 0}}">
+      <text>暂无匹配症状 🔍</text>
+    </view>
+  </view>
+
+  <!-- 手风琴详情区 -->
+  <view class="accordion-area pad24 mt8" wx:if="{{selectedItem}}">
+
+    <!-- 头部 -->
+    <view class="acc-header">
+      <text class="acc-icon">{{selectedItem.icon}}</text>
+      <view class="acc-header-info">
+        <text class="acc-name">{{selectedItem.name}}</text>
+        <text class="acc-brief">{{selectedItem.brief}}</text>
+      </view>
+      <view class="s-risk risk-{{selectedItem.risk}}">{{selectedItem.riskText}}</view>
+      <text class="acc-close" bindtap="onCloseDetail">✕</text>
+    </view>
+
+    <!-- 4 个折叠面板 -->
+    <view class="dim-panel mt12"
+          wx:for="{{dims}}" wx:key="key" wx:for-item="dim" wx:for-index="dIdx">
+      <view class="dim-panel-hd" bindtap="onToggleDim" data-idx="{{dIdx}}"
+            style="border-left: 6rpx solid {{dim.color}};">
+        <text class="dim-panel-title">{{dim.title}}</text>
+        <text class="dim-panel-arrow {{openDims[dIdx] ? 'arrow-up' : ''}}">▾</text>
+      </view>
+      <view class="dim-panel-bd" wx:if="{{openDims[dIdx]}}">
+        <view class="dim-item" wx:for="{{dim.items}}" wx:key="*this" wx:for-item="txt">
+          <text class="dim-dot" style="color:{{dim.color}};">•</text>
+          <text class="dim-text">{{txt}}</text>
+        </view>
+      </view>
+    </view>
+
+  </view>
+
+</view>

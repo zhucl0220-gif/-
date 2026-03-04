@@ -1,0 +1,138 @@
+.page {
+  min-height: 100vh;
+  background: #F4F6F8;
+  padding-bottom: 40rpx;
+}
+
+.header {
+  background: linear-gradient(135deg, #00C7B2, #00A896);
+  padding: 40rpx 32rpx 48rpx;
+}
+
+.header-title {
+  color: #fff;
+  font-size: 40rpx;
+  font-weight: 600;
+  display: block;
+}
+
+.header-sub {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 26rpx;
+  margin-top: 8rpx;
+  display: block;
+}
+
+.section {
+  margin: 24rpx 32rpx 0;
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 28rpx;
+}
+
+.section-title {
+  font-size: 28rpx;
+  color: #888;
+  display: block;
+  margin-bottom: 20rpx;
+  font-weight: 500;
+}
+
+.macro-grid {
+  display: flex;
+  justify-content: space-around;
+}
+
+.macro-item {
+  text-align: center;
+  flex: 1;
+}
+
+.macro-val {
+  font-size: 48rpx;
+  font-weight: 700;
+  color: #00C7B2;
+  display: block;
+}
+
+.macro-unit {
+  font-size: 22rpx;
+  color: #aaa;
+  display: block;
+}
+
+.macro-label {
+  font-size: 24rpx;
+  color: #666;
+  display: block;
+  margin-top: 4rpx;
+}
+
+.meal-row {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20rpx;
+}
+
+.meal-badge {
+  background: #E6FAF8;
+  color: #00A896;
+  font-size: 24rpx;
+  padding: 6rpx 16rpx;
+  border-radius: 8rpx;
+  margin-right: 16rpx;
+  white-space: nowrap;
+}
+
+.meal-desc {
+  font-size: 27rpx;
+  color: #444;
+  line-height: 1.6;
+  flex: 1;
+}
+
+.tag-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.restrict-tag {
+  background: #FFF3CD;
+  color: #B07D00;
+  font-size: 24rpx;
+  padding: 8rpx 20rpx;
+  border-radius: 40rpx;
+}
+
+.notes-text {
+  font-size: 27rpx;
+  color: #555;
+  line-height: 1.8;
+  display: block;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 0;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+}
+
+.empty-text {
+  font-size: 34rpx;
+  color: #333;
+  margin-top: 24rpx;
+  font-weight: 500;
+}
+
+.empty-sub {
+  font-size: 26rpx;
+  color: #999;
+  margin-top: 12rpx;
+}

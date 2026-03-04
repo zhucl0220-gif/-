@@ -1,0 +1,77 @@
+/* AlertCenter.module.css */
+
+/* ──── 整体容器 ──────────────────────────────────────────────────────────── */
+.container {
+  padding: 20px 24px 32px;
+  min-height: calc(100vh - 56px);
+  background: #F5F7FA;
+}
+
+/* ──── 页面标题栏 ────────────────────────────────────────────────────────── */
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+/* ──── 汇总卡片行 ────────────────────────────────────────────────────────── */
+.summaryRow {
+  margin-bottom: 20px;
+}
+
+/* ──── 过滤栏 ───────────────────────────────────────────────────────────── */
+.filterBar {
+  background: #fff;
+  border: 1px solid #EBEBEB;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ──── 预警表格 ──────────────────────────────────────────────────────────── */
+.alertTable :global(.ant-table-wrapper) {
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid #EBEBEB;
+  overflow: hidden;
+}
+
+/* 危急行 */
+.criticalRow {
+  background: #FFF5F5 !important;
+}
+
+.criticalRow:hover > td {
+  background: #FFE8E8 !important;
+}
+
+/* 警告行 */
+.warningRow {
+  background: #FFFDF0 !important;
+}
+
+.warningRow:hover > td {
+  background: #FFF8D9 !important;
+}
+
+/* ──── 指标单元格 ────────────────────────────────────────────────────────── */
+.metricCell {
+  padding-left: 8px;
+  line-height: 1.4;
+}
+
+/* ──── 动画：危急预警闪烁 badge ─────────────────────────────────────────── */
+@keyframes pulse-red {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+
+.criticalBadge {
+  animation: pulse-red 1.5s ease-in-out infinite;
+}

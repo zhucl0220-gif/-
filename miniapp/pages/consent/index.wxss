@@ -1,0 +1,673 @@
+/* pages/consent/index.wxss — 阿福管家风 */
+
+/* ── 全局 ────────────────────────────────────────────── */
+.root {
+  min-height: 100vh;
+  background: #F8F9FA;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── 顶部 Banner ────────────────────────────────────── */
+.banner {
+  background: linear-gradient(135deg, #00C7B2 0%, #00a898 100%);
+  padding: 56rpx 40rpx 48rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.banner-logo { font-size: 80rpx; margin-bottom: 12rpx; }
+.banner-title {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 2rpx;
+}
+.banner-sub {
+  font-size: 24rpx;
+  color: rgba(255,255,255,0.8);
+  margin-top: 6rpx;
+  margin-bottom: 36rpx;
+}
+
+/* ── 分步导航 ────────────────────────────────────────── */
+.step-nav {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0 12rpx;
+  box-sizing: border-box;
+}
+.step-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+.step-circle {
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  border: 3rpx solid rgba(255,255,255,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+.step-node.active .step-circle  { background: #fff; border-color: #fff; }
+.step-node.done  .step-circle  { background: rgba(255,255,255,0.7); border-color: #fff; }
+.step-check { font-size: 24rpx; color: #00C7B2; font-weight: 700; }
+.step-num   { font-size: 22rpx; color: rgba(255,255,255,0.7); font-weight: 600; }
+.step-node.active .step-num { color: #00C7B2; }
+.step-name  { font-size: 20rpx; color: rgba(255,255,255,0.65); margin-top: 8rpx; }
+.step-node.active .step-name { color: #fff; font-weight: 600; }
+.step-node.done  .step-name  { color: rgba(255,255,255,0.85); }
+.step-connector {
+  flex: 0.6;
+  height: 3rpx;
+  background: rgba(255,255,255,0.35);
+  margin-bottom: 28rpx;
+  position: relative;
+  top: -14rpx;
+}
+
+/* ── 主体内容区 ────────────────────────────────────────── */
+.body {
+  flex: 1;
+  padding: 28rpx 28rpx env(safe-area-inset-bottom, 40rpx);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── 通用卡片 ───────────────────────────────────────────── */
+.card {
+  background: #fff;
+  border-radius: 20rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.05);
+  overflow: hidden;
+  margin-bottom: 24rpx;
+}
+
+/* ── 声明文档卡片 ───────────────────────────────────────── */
+.doc-card { flex: 1; display: flex; flex-direction: column; margin-bottom: 24rpx; }
+.doc-badge {
+  display: inline-flex;
+  align-self: flex-start;
+  margin: 24rpx 28rpx 0;
+  padding: 4rpx 18rpx;
+  background: #E6FBF9;
+  color: #00C7B2;
+  font-size: 22rpx;
+  font-weight: 600;
+  border-radius: 20rpx;
+}
+.doc-card-title {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #1A1A1A;
+  padding: 16rpx 28rpx;
+}
+.doc-scroll {
+  flex: 1;
+  height: 520rpx;
+  padding: 0 28rpx 20rpx;
+  box-sizing: border-box;
+}
+.doc-text {
+  font-size: 26rpx;
+  line-height: 1.9;
+  color: #444;
+  white-space: pre-wrap;
+  display: block;
+}
+.doc-end-mark {
+  text-align: center;
+  font-size: 22rpx;
+  color: #ccc;
+  padding: 20rpx 0;
+}
+
+/* 勾选行 */
+.check-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16rpx;
+  padding: 20rpx 28rpx;
+  background: #F0FBF9;
+  border-top: 1rpx solid #E6FBF9;
+}
+.afu-checkbox {
+  flex-shrink: 0;
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 8rpx;
+  border: 3rpx solid #ccc;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rpx;
+}
+.afu-checkbox.checked { background: #00C7B2; border-color: #00C7B2; }
+.check-icon { font-size: 24rpx; color: #fff; font-weight: 700; }
+.check-label { font-size: 26rpx; color: #333; line-height: 1.6; }
+
+/* ── 底部按钮区 ───────────────────────────────────────────── */
+.footer {
+  display: flex;
+  gap: 20rpx;
+  padding-top: 4rpx;
+}
+.btn-primary {
+  height: 96rpx;
+  border-radius: 48rpx;
+  background: linear-gradient(90deg, #00C7B2 0%, #00a898 100%);
+  color: #fff;
+  font-size: 32rpx;
+  font-weight: 700;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 24rpx rgba(0,199,178,0.35);
+  letter-spacing: 1rpx;
+}
+.btn-primary.full  { flex: 1; }
+.btn-primary.half  { flex: 2; }
+.btn-primary.disabled { background: #B2EDE8; box-shadow: none; }
+.btn-ghost {
+  flex: 1;
+  height: 96rpx;
+  border-radius: 48rpx;
+  background: #F0F1F3;
+  color: #666;
+  font-size: 30rpx;
+  font-weight: 600;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 手写签名页 ──────────────────────────────────────────── */
+.sign-heading {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #1A1A1A;
+  padding: 28rpx 28rpx 8rpx;
+}
+.sign-desc {
+  font-size: 24rpx;
+  color: #888;
+  padding: 0 28rpx 24rpx;
+}
+.sign-canvas-wrap {
+  position: relative;
+  margin: 0 28rpx;
+  height: 280rpx;
+  border: 2rpx dashed #B2EDE8;
+  border-radius: 16rpx;
+  background: #FAFEFE;
+  overflow: hidden;
+}
+.sign-canvas { width: 100%; height: 100%; display: block; }
+.sign-hint {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26rpx;
+  color: #B2EDE8;
+  pointer-events: none;
+  letter-spacing: 4rpx;
+}
+.sign-tool-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx 28rpx;
+}
+.btn-clear {
+  padding: 8rpx 28rpx;
+  border-radius: 20rpx;
+  background: #FFF0EE;
+  color: #FF6B6B;
+  font-size: 24rpx;
+  border: 2rpx solid #FFD0CC;
+}
+.sign-ok {
+  font-size: 26rpx;
+  color: #00C7B2;
+  font-weight: 600;
+}
+.sign-meta {
+  padding: 0 28rpx 28rpx;
+}
+.meta-row {
+  display: flex;
+  gap: 12rpx;
+  margin-bottom: 8rpx;
+}
+.meta-key { font-size: 24rpx; color: #999; }
+.meta-val { font-size: 24rpx; color: #333; }
+
+/* ── 完成页 ──────────────────────────────────────────────── */
+.done-body {
+  align-items: center;
+  padding-top: 60rpx;
+}
+.done-circle {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  background: #00C7B2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 56rpx;
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 12rpx 32rpx rgba(0,199,178,0.35);
+  margin-bottom: 28rpx;
+}
+.done-title {
+  font-size: 38rpx;
+  font-weight: 700;
+  color: #1A1A1A;
+  margin-bottom: 12rpx;
+}
+.done-desc {
+  font-size: 26rpx;
+  color: #666;
+  text-align: center;
+  line-height: 1.7;
+  margin-bottom: 32rpx;
+  padding: 0 20rpx;
+}
+.done-info {
+  width: 100%;
+  padding: 24rpx 28rpx;
+  margin-bottom: 8rpx;
+}
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 26rpx;
+  padding: 10rpx 0;
+  border-bottom: 1rpx solid #F5F5F5;
+}
+.info-row:last-child { border-bottom: none; }
+.info-k { color: #999; }
+.info-v { color: #333; font-weight: 500; }
+.tag-green {
+  padding: 4rpx 20rpx;
+  background: #E6FBF9;
+  color: #00C7B2;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+  font-weight: 600;
+}
+.mt24 { margin-top: 24rpx; }
+
+/* ── 顶部标题栏 ──────────────────────────────────────────── */
+.consent-header {
+  background: linear-gradient(90deg, #00C7B2 0%, #00a898 100%);
+  padding: 80rpx 40rpx 40rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.consent-title {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 2rpx;
+}
+
+.consent-subtitle {
+  font-size: 24rpx;
+  color: rgba(255,255,255,0.8);
+  margin-top: 8rpx;
+}
+
+/* ── 步骤进度条 ──────────────────────────────────────────── */
+.step-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30rpx 20rpx 0;
+  background: linear-gradient(90deg, #00C7B2 0%, #00a898 100%);
+}
+
+.step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  position: relative;
+}
+
+.step-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 22rpx;
+  left: 60%;
+  right: -40%;
+  height: 4rpx;
+  background: rgba(255,255,255,0.35);
+  z-index: 0;
+}
+
+.step-item.active::after,
+.step-item.done::after {
+  background: rgba(255,255,255,0.9);
+}
+
+.step-dot {
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  border: 3rpx solid rgba(255,255,255,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.step-item.active .step-dot {
+  background: #fff;
+  border-color: #fff;
+}
+
+.step-item.done .step-dot {
+  background: rgba(255,255,255,0.7);
+  border-color: rgba(255,255,255,0.7);
+}
+
+.step-dot-inner {
+  width: 18rpx;
+  height: 18rpx;
+  border-radius: 50%;
+  background: #00C7B2;
+}
+
+.step-item.active .step-dot-inner { background: #00C7B2; }
+.step-item.done .step-dot-inner { background: #52c41a; }
+
+.step-label {
+  font-size: 20rpx;
+  color: rgba(255,255,255,0.6);
+  margin-top: 8rpx;
+  text-align: center;
+}
+
+.step-item.active .step-label {
+  color: #fff;
+  font-weight: 600;
+}
+.step-item.done .step-label {
+  color: rgba(255,255,255,0.85);
+}
+
+/* ── 主体内容区 ──────────────────────────────────────────── */
+.consent-body {
+  flex: 1;
+  padding: 30rpx 28rpx 40rpx;
+}
+
+/* ── 声明文档卡片 ─────────────────────────────────────────── */
+.doc-card {
+  background: #fff;
+  border-radius: 24rpx;
+  box-shadow: 0 8rpx 32rpx rgba(0,199,178, 0.08);
+  overflow: hidden;
+  margin-bottom: 24rpx;
+}
+
+.doc-card-header {
+  background: linear-gradient(90deg, #00C7B2 0%, #00a898 100%);
+  padding: 24rpx 32rpx;
+}
+
+.doc-card-title {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #fff;
+}
+
+.doc-scroll {
+  height: 560rpx;
+  padding: 28rpx 32rpx;
+  box-sizing: border-box;
+}
+
+.doc-content {
+  font-size: 26rpx;
+  line-height: 1.9;
+  color: #333;
+  white-space: pre-wrap;
+}
+
+/* ── 勾选确认区 ──────────────────────────────────────────── */
+.check-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16rpx;
+  padding: 20rpx 28rpx;
+  background: #f0f7ff;
+  border-top: 2rpx solid #e8f4ff;
+}
+
+.consent-checkbox {
+  width: 40rpx;
+  height: 40rpx;
+  flex-shrink: 0;
+  margin-top: 2rpx;
+}
+
+.check-label {
+  font-size: 26rpx;
+  color: #00C7B2;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+/* ── 操作按钮区 ──────────────────────────────────────────── */
+.action-row {
+  display: flex;
+  gap: 20rpx;
+}
+
+.btn-prev {
+  flex: 1;
+  height: 88rpx;
+  border-radius: 44rpx;
+  background: #f5f7fa;
+  color: #666;
+  font-size: 30rpx;
+  font-weight: 600;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-next {
+  flex: 2;
+  height: 88rpx;
+  border-radius: 44rpx;
+  background: linear-gradient(90deg, #00C7B2 0%, #00a898 100%);
+  color: #fff;
+  font-size: 30rpx;
+  font-weight: 700;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 24rpx rgba(0,199,178, 0.35);
+}
+
+.btn-next[disabled] {
+  background: #c8d8f0;
+  box-shadow: none;
+  color: rgba(255,255,255,0.7);
+}
+
+/* ── 签名页 ──────────────────────────────────────────────── */
+.sign-card {
+  background: #fff;
+  border-radius: 24rpx;
+  box-shadow: 0 8rpx 32rpx rgba(0,199,178, 0.08);
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+}
+
+.sign-card-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 8rpx;
+}
+
+.sign-card-hint {
+  font-size: 24rpx;
+  color: #999;
+  margin-bottom: 24rpx;
+}
+
+.sign-canvas-wrap {
+  position: relative;
+  width: 100%;
+  height: 280rpx;
+  border-radius: 16rpx;
+  overflow: hidden;
+  border: 2rpx dashed #c3d9ff;
+  background: #fafcff;
+}
+
+#signature-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.sign-canvas-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.sign-placeholder-text {
+  font-size: 28rpx;
+  color: #c3d9ff;
+  letter-spacing: 4rpx;
+}
+
+.sign-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16rpx;
+}
+
+.sign-time-text {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.btn-clear-sign {
+  padding: 8rpx 28rpx;
+  border-radius: 24rpx;
+  background: #fff5f5;
+  color: #ff4d4f;
+  font-size: 24rpx;
+  border: 2rpx solid #ffccc7;
+}
+
+/* ── 完成页 ──────────────────────────────────────────────── */
+.done-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60rpx 40rpx;
+  background: #fff;
+  border-radius: 24rpx;
+  box-shadow: 0 8rpx 32rpx rgba(0,199,178, 0.08);
+  margin-bottom: 24rpx;
+}
+
+.done-icon {
+  font-size: 120rpx;
+  line-height: 1;
+  margin-bottom: 24rpx;
+}
+
+.done-title {
+  font-size: 38rpx;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 12rpx;
+}
+
+.done-subtitle {
+  font-size: 26rpx;
+  color: #666;
+  text-align: center;
+  line-height: 1.7;
+  margin-bottom: 28rpx;
+}
+
+.done-info-card {
+  width: 100%;
+  background: #f6ffed;
+  border-radius: 16rpx;
+  padding: 24rpx 28rpx;
+  margin-bottom: 36rpx;
+}
+
+.done-info-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 26rpx;
+  margin-bottom: 8rpx;
+}
+
+.done-info-label {
+  color: #888;
+}
+
+.done-info-val {
+  color: #333;
+  font-weight: 500;
+}
+
+.done-version-tag {
+  padding: 6rpx 20rpx;
+  background: #f6ffed;
+  border: 2rpx solid #b7eb8f;
+  border-radius: 24rpx;
+  font-size: 22rpx;
+  color: #52c41a;
+  font-weight: 600;
+}
+
+.btn-enter {
+  width: 100%;
+  height: 96rpx;
+  border-radius: 48rpx;
+  background: linear-gradient(90deg, #52c41a 0%, #73d13d 100%);
+  color: #fff;
+  font-size: 34rpx;
+  font-weight: 700;
+  border: none;
+  box-shadow: 0 8rpx 24rpx rgba(82, 196, 26, 0.35);
+}

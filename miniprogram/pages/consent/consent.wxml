@@ -1,0 +1,11 @@
+<view class="page">
+  <view class="header">
+    <text class="title">知情同意书</text>
+  </view>
+  <view class="content-card">
+    <text class="content-text">本人了解并同意参与肝移植患者营养干预管理项目，接受营养师和AI系统的营养评估与指导服务。\n\n本系统将收集您的饮食记录、化验数据用于营养分析，所有数据严格保密，仅用于医疗目的。</text>
+  </view>
+  <view class="action-bar">
+    <button class="sign-btn" bindtap="goSign">去签名确认</button>
+  </view>
+</view>

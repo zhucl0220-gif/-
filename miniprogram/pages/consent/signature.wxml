@@ -1,0 +1,157 @@
+<!-- ─────────────────────────────────────────────────────────── -->
+<!-- 手写签名页面 · signature.wxml                              -->
+<!-- 功能：Canvas 手写签名 → 导出图片 → 上传后端             -->
+<!-- ─────────────────────────────────────────────────────────── -->
+<view class="page-wrap">
+
+  <!-- ── 自定义导航栏 ─────────────────────────────────────── -->
+  <view class="nav-bar" style="padding-top: {{statusBarHeight}}px;">
+    <view class="nav-inner">
+      <view class="nav-back" bindtap="onBack">
+        <text class="nav-back-icon">‹</text>
+      </view>
+      <text class="nav-title">签署知情同意书</text>
+      <view class="nav-placeholder"></view>
+    </view>
+  </view>
+
+  <!-- ── 进度提示 ─────────────────────────────────────────── -->
+  <view class="step-bar">
+    <view class="step-item step-done">
+      <view class="step-dot step-dot-done"><text class="step-check">✓</text></view>
+      <text class="step-label">阅读协议</text>
+    </view>
+    <view class="step-line step-line-done"></view>
+    <view class="step-item step-active">
+      <view class="step-dot step-dot-active"><text class="step-num">2</text></view>
+      <text class="step-label step-label-active">手写签名</text>
+    </view>
+    <view class="step-line"></view>
+    <view class="step-item">
+      <view class="step-dot"><text class="step-num">3</text></view>
+      <text class="step-label">完成解锁</text>
+    </view>
+  </view>
+
+  <!-- ── 签名说明卡 ────────────────────────────────────────── -->
+  <view class="tip-card">
+    <text class="tip-icon">✍️</text>
+    <view class="tip-body">
+      <text class="tip-title">请在下方框内手写您的姓名</text>
+      <text class="tip-desc">签名将与知情同意书合成 PDF，具有法律效力</text>
+    </view>
+  </view>
+
+  <!-- ── Canvas 签名区 ─────────────────────────────────────── -->
+  <view class="canvas-card">
+
+    <!-- 画布标头 -->
+    <view class="canvas-header">
+      <text class="canvas-label">签名区域</text>
+      <view class="canvas-hint" wx:if="{{isEmpty}}">
+        <text class="canvas-hint-text">← 请在此处手写签名</text>
+      </view>
+    </view>
+
+    <!-- 画布主体 -->
+    <view class="canvas-wrap" id="canvas-wrap">
+      <!-- type="2d" 为新版高性能 Canvas API，避免异步问题 -->
+      <canvas
+        type="2d"
+        id="signatureCanvas"
+        class="signature-canvas"
+        style="width:{{canvasWidth}}px; height:{{canvasHeight}}px;"
+        bindtouchstart="onTouchStart"
+        bindtouchmove="onTouchMove"
+        bindtouchend="onTouchEnd"
+        catchtouchmove="onTouchMove"
+      ></canvas>
+
+      <!-- 空状态水印提示（有笔迹后隐藏） -->
+      <view class="canvas-placeholder" wx:if="{{isEmpty}}">
+        <text class="placeholder-text">在此手写签名</text>
+      </view>
+    </view>
+
+    <!-- 画布底部基准线 -->
+    <view class="canvas-baseline">
+      <view class="baseline-line"></view>
+      <text class="baseline-label">签名</text>
+    </view>
+
+  </view>
+
+  <!-- ── 工具栏（笔粗 / 笔色） ────────────────────────────── -->
+  <view class="toolbar-card">
+    <view class="toolbar-section">
+      <text class="toolbar-label">笔迹粗细</text>
+      <view class="pen-size-row">
+        <view
+          class="pen-size-btn {{penSize === item.size ? 'pen-size-active' : ''}}"
+          wx:for="{{penSizes}}"
+          wx:key="size"
+          bindtap="onPenSizeChange"
+          data-size="{{item.size}}"
+        >
+          <view class="pen-dot" style="width:{{item.size * 2}}rpx; height:{{item.size * 2}}rpx;"></view>
+        </view>
+      </view>
+    </view>
+
+    <view class="toolbar-divider"></view>
+
+    <view class="toolbar-section">
+      <text class="toolbar-label">笔迹颜色</text>
+      <view class="pen-color-row">
+        <view
+          class="pen-color-btn {{penColor === item.color ? 'pen-color-active' : ''}}"
+          wx:for="{{penColors}}"
+          wx:key="color"
+          bindtap="onPenColorChange"
+          data-color="{{item.color}}"
+          style="background: {{item.color}};"
+        >
+          <text class="pen-color-check" wx:if="{{penColor === item.color}}">✓</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ── 底部按钮区 ─────────────────────────────────────────── -->
+  <view class="bottom-actions">
+
+    <!-- 重写按钮 -->
+    <view class="btn-clear" bindtap="onClear">
+      <text class="btn-clear-icon">↺</text>
+      <text class="btn-clear-text">重写</text>
+    </view>
+
+    <!-- 确认提交按钮 -->
+    <view
+      class="btn-submit {{isEmpty ? 'btn-submit-disabled' : ''}} {{uploading ? 'btn-submit-loading' : ''}}"
+      bindtap="onSubmit"
+    >
+      <view class="btn-submit-inner" wx:if="{{!uploading}}">
+        <text class="btn-submit-icon">✓</text>
+        <text class="btn-submit-text">确认提交</text>
+      </view>
+      <view class="btn-submit-inner" wx:else>
+        <text class="btn-submit-text">上传中... {{uploadProgress}}%</text>
+      </view>
+    </view>
+
+  </view>
+
+  <!-- ── 上传进度浮层 ──────────────────────────────────────── -->
+  <view class="upload-overlay" wx:if="{{uploading}}">
+    <view class="upload-modal">
+      <view class="upload-spinner"></view>
+      <text class="upload-tip">正在生成知情同意书...</text>
+      <view class="upload-progress-bar">
+        <view class="upload-progress-fill" style="width: {{uploadProgress}}%;"></view>
+      </view>
+      <text class="upload-progress-num">{{uploadProgress}}%</text>
+    </view>
+  </view>
+
+</view>

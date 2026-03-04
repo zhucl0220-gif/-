@@ -1,0 +1,49 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/consent/consent",
+    "pages/screening/screening",
+    "pages/screening/report",
+    "pages/lab/upload",
+    "pages/lab/result",
+    "pages/nutrition/detail",
+    "pages/nutrition/plan",
+    "pages/diet/record",
+    "pages/profile/profile",
+    "pages/messages/messages"
+  ],
+  "tabBar": {
+    "color": "#A0A8B5",
+    "selectedColor": "#00C7B2",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/nutrition/plan",
+        "text": "营养"
+      },
+      {
+        "pagePath": "pages/lab/upload",
+        "text": "化验"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的"
+      }
+    ]
+  },
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#00C7B2",
+    "navigationBarTitleText": "营养管家",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#F4F6F8"
+  },
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents",
+  "sitemapLocation": "sitemap.json"
+}

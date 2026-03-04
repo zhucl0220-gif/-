@@ -1,0 +1,179 @@
+/* pages/report/index.wxss — 打印风 */
+page   { background: #fff; }
+.page-root { min-height: 100vh; background: #fff; }
+
+/* 加载 */
+.loading-wrap { display:flex; flex-direction:column; align-items:center; padding:120rpx 0; }
+.loading-spin { font-size:60rpx; }
+.loading-text { font-size:28rpx; color:#888; margin-top:20rpx; }
+
+/* 滚动区 */
+.report-scroll { height:100vh; }
+
+/* ══ 打印头 ══ */
+.print-header {
+  padding: 48rpx 40rpx 32rpx;
+  background: #fff;
+}
+.print-logo-row {
+  display: flex; align-items: center; gap: 12rpx;
+  margin-bottom: 20rpx;
+}
+.print-logo-icon { font-size: 34rpx; }
+.print-hospital  { font-size: 24rpx; color: #888; letter-spacing: 1rpx; }
+.print-divider-heavy {
+  height: 4rpx;
+  background: linear-gradient(90deg, #00C7B2 60%, transparent 100%);
+  border-radius: 2rpx;
+  margin-bottom: 24rpx;
+}
+.print-main-title {
+  font-size: 46rpx; font-weight: 800; color: #111;
+  letter-spacing: 3rpx; display: block;
+  margin-bottom: 16rpx;
+}
+.print-subtitle-row {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.print-subtitle { font-size: 24rpx; color: #999; }
+.print-risk-badge {
+  font-size: 22rpx; font-weight: 700;
+  padding: 6rpx 20rpx; border-radius: 20rpx;
+}
+.risk-badge-low    { background: #f6ffed; color: #52c41a; border: 1rpx solid #b7eb8f; }
+.risk-badge-medium { background: #fffbe6; color: #d4830e; border: 1rpx solid #ffe58f; }
+.risk-badge-high   { background: #fff2f0; color: #cf1322; border: 1rpx solid #ffa39e; }
+
+/* ══ 绿色分节线 ══ */
+.section-divider {
+  height: 2rpx;
+  background: linear-gradient(90deg, #00C7B2 30%, rgba(0,199,178,0.1) 100%);
+  margin: 0 40rpx 0;
+}
+
+/* ══ 每个 Section ══ */
+.report-section { padding: 32rpx 40rpx; }
+.section-hd {
+  display: flex; align-items: center; gap: 16rpx;
+  margin-bottom: 24rpx;
+}
+.sec-num {
+  font-size: 20rpx; font-weight: 700; color: #00C7B2;
+  width: 44rpx; height: 44rpx; border-radius: 50%;
+  border: 2rpx solid #00C7B2;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.sec-title { font-size: 30rpx; font-weight: 700; color: #1a1a1a; flex-shrink: 0; }
+.sec-line  { flex: 1; height: 2rpx; background: #f5f5f5; }
+
+/* §1 基本信息 */
+.info-grid-2x3 {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 16rpx;
+}
+.info-cell {
+  background: #FAFAFA;
+  border-radius: 16rpx;
+  padding: 20rpx 24rpx;
+  border-left: 4rpx solid #E8F9F7;
+}
+.cell-label { font-size: 22rpx; color: #aaa; display: block; }
+.cell-val   { font-size: 30rpx; font-weight: 700; color: #1a1a1a; display: block; margin-top: 4rpx; }
+.cell-unit  { font-size: 22rpx; font-weight: 400; color: #888; }
+.bmi-val    { color: #00C7B2; }
+
+/* §2 指标达标度 */
+.lab-row { margin-bottom: 28rpx; }
+.lab-row-top {
+  display: flex; align-items: center; gap: 16rpx;
+  margin-bottom: 12rpx;
+}
+.lab-name-txt  { font-size: 28rpx; color: #1a1a1a; font-weight: 600; flex: 1; }
+.lab-val-txt   { font-size: 28rpx; font-weight: 700; flex-shrink: 0; }
+.lab-status-tag { font-size: 20rpx; padding: 4rpx 16rpx; border-radius: 20rpx; flex-shrink: 0; }
+.tag-success { background: #f6ffed; color: #52c41a; }
+.tag-warning { background: #fffbe6; color: #d4830e; }
+.tag-danger  { background: #fff2f0; color: #cf1322; }
+.text-success { color: #52c41a; }
+.text-warning { color: #d4830e; }
+.text-danger  { color: #cf1322; }
+
+/* 进度条（含正常区间） */
+.lab-bar-track {
+  height: 18rpx; background: #f0f0f0; border-radius: 10rpx;
+  position: relative; overflow: hidden;
+}
+.lab-normal-bg {
+  position: absolute; top: 0; bottom: 0;
+  background: rgba(0,199,178,0.18);
+}
+.lab-bar-fill {
+  position: absolute; top: 0; bottom: 0; left: 0;
+  border-radius: 10rpx; max-width: 100%;
+  transition: width .5s ease;
+}
+.fill-success { background: linear-gradient(90deg, #95de64, #52c41a); }
+.fill-warning { background: linear-gradient(90deg, #ffd666, #faad14); }
+.fill-danger  { background: linear-gradient(90deg, #ff7875, #ff4d4f); }
+.lab-needle {
+  position: absolute; top: -4rpx; bottom: -4rpx;
+  width: 4rpx; background: #333;
+  border-radius: 2rpx;
+  transform: translateX(-50%);
+}
+.lab-ref-row { margin-top: 8rpx; }
+.lab-ref-txt { font-size: 20rpx; color: #bbb; }
+
+/* §3 Checkbox 建议 */
+.suggest-item {
+  display: flex; align-items: flex-start; gap: 20rpx;
+  padding: 16rpx 0;
+  border-bottom: 1rpx dashed #f0f0f0;
+}
+.suggest-check {
+  width: 40rpx; height: 40rpx;
+  border-radius: 50%; border: 2rpx solid #00C7B2;
+  flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+  background: #fff;
+  transition: background .2s;
+}
+.suggest-check.checked {
+  background: #00C7B2; border-color: #00C7B2;
+}
+.check-mark { font-size: 22rpx; color: #fff; font-weight: 700; }
+.suggest-txt { font-size: 27rpx; color: #333; line-height: 1.8; flex: 1; }
+.txt-done    { color: #bbb; text-decoration: line-through; }
+
+/* 建议进度条 */
+.suggest-progress-row {
+  display: flex; align-items: center; gap: 16rpx;
+  margin-top: 20rpx; padding-top: 16rpx;
+  border-top: 2rpx solid #f0f0f0;
+}
+.sp-label  { font-size: 22rpx; color: #888; flex-shrink: 0; }
+.sp-bar-bg { flex: 1; height: 12rpx; background: #f0f0f0; border-radius: 6rpx; overflow: hidden; }
+.sp-bar-fill { height: 100%; background: linear-gradient(90deg,#00C7B2,#009e8e); border-radius: 6rpx; transition: width .4s; }
+
+/* §4 饮食方案 */
+.diet-text { font-size: 26rpx; color: #555; line-height: 2.0; display: block; }
+
+/* 页脚 */
+.print-footer { padding: 32rpx 40rpx 16rpx; }
+.print-divider-light { height: 1rpx; background: #eee; margin-bottom: 20rpx; }
+.footer-disclaimer { font-size: 20rpx; color: #bbb; line-height: 1.8; display: block; }
+
+/* 返回按钮 */
+.btn-wrap { padding: 24rpx 40rpx 60rpx; }
+.btn-back {
+  width: 100%; height: 88rpx; border-radius: 44rpx;
+  background: #fff; color: #00C7B2;
+  border: 2rpx solid #00C7B2;
+  font-size: 30rpx; font-weight: 600;
+}
+.mt20 { margin-top: 20rpx; }
+
+/* 空态 */
+.empty-wrap { display:flex; flex-direction:column; align-items:center; padding:120rpx 40rpx; gap:16rpx; }
+.empty-icon { font-size:80rpx; }
+.empty-text { font-size:28rpx; color:#bbb; }

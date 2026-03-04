@@ -1,0 +1,212 @@
+/* app.wxss — 全局样式 */
+
+page {
+  background-color: #F5F7FA;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', sans-serif;
+  font-size: 28rpx;
+  color: #1A1A1A;
+  box-sizing: border-box;
+}
+
+/* ── 通用容器 ─────────────────────────────────────────────── */
+.container {
+  padding: 24rpx;
+  min-height: 100vh;
+}
+
+.card {
+  background: #FFFFFF;
+  border-radius: 20rpx;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 2rpx 16rpx rgba(0,0,0,0.06);
+}
+
+.card-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1A1A1A;
+  margin-bottom: 16rpx;
+}
+
+/* ── 按钮 ──────────────────────────────────────────────────── */
+.btn-primary {
+  width: 100%;
+  height: 88rpx;
+  background: linear-gradient(135deg, #00C7B2 0%, #00a898 100%);
+  border-radius: 44rpx;
+  color: #FFFFFF;
+  font-size: 32rpx;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  box-shadow: 0 8rpx 24rpx rgba(0,199,178,0.35);
+}
+
+.btn-primary[disabled],
+.btn-primary.disabled {
+  background: #C8C8C8;
+  box-shadow: none;
+}
+
+.btn-secondary {
+  width: 100%;
+  height: 88rpx;
+  background: #FFFFFF;
+  border-radius: 44rpx;
+  color: #00C7B2;
+  font-size: 32rpx;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2rpx solid #00C7B2;
+}
+
+.btn-sm {
+  height: 64rpx;
+  padding: 0 32rpx;
+  border-radius: 32rpx;
+  font-size: 26rpx;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 标签 ──────────────────────────────────────────────────── */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 6rpx 18rpx;
+  border-radius: 24rpx;
+  font-size: 22rpx;
+  font-weight: 500;
+}
+.tag-blue   { background: #E6F4FF; color: #1677FF; }
+.tag-green  { background: #F6FFED; color: #52C41A; }
+.tag-red    { background: #FFF2F0; color: #FF4D4F; }
+.tag-orange { background: #FFF7E6; color: #FA8C16; }
+.tag-gray   { background: #F0F0F0; color: #8C8C8C; }
+
+/* ── 文字 ──────────────────────────────────────────────────── */
+.text-primary   { color: #00C7B2; }
+.text-success   { color: #52C41A; }
+.text-warning   { color: #FA8C16; }
+.text-danger    { color: #FF4D4F; }
+.text-secondary { color: #8C8C8C; }
+.text-bold      { font-weight: 600; }
+.text-sm        { font-size: 24rpx; }
+.text-xs        { font-size: 22rpx; }
+.text-lg        { font-size: 36rpx; }
+.text-xl        { font-size: 44rpx; }
+
+/* ── 分割线 ────────────────────────────────────────────────── */
+.divider {
+  height: 1rpx;
+  background: #F0F0F0;
+  margin: 20rpx 0;
+}
+
+/* ── 风险等级颜色 ───────────────────────────────────────────── */
+.risk-low    { color: #52C41A; background: #F6FFED; }
+.risk-medium { color: #FA8C16; background: #FFF7E6; }
+.risk-high   { color: #FF4D4F; background: #FFF2F0; }
+
+/* ── 阶段颜色 ──────────────────────────────────────────────── */
+.phase-pre    { color: #722ED1; }
+.phase-inhos  { color: #1677FF; }
+.phase-post   { color: #13C2C2; }
+.phase-home   { color: #52C41A; }
+
+/* ── flex 工具类 ───────────────────────────────────────────── */
+.flex         { display: flex; }
+.flex-col     { display: flex; flex-direction: column; }
+.flex-center  { display: flex; align-items: center; justify-content: center; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.flex-wrap    { flex-wrap: wrap; }
+.flex-1       { flex: 1; }
+
+/* ── 间距工具类 ────────────────────────────────────────────── */
+.mt-8  { margin-top: 8rpx; }
+.mt-16 { margin-top: 16rpx; }
+.mt-24 { margin-top: 24rpx; }
+.mt-32 { margin-top: 32rpx; }
+.mb-16 { margin-bottom: 16rpx; }
+.mb-24 { margin-bottom: 24rpx; }
+.mb-32 { margin-bottom: 32rpx; }
+.gap-8  { gap: 8rpx; }
+.gap-12 { gap: 12rpx; }
+.gap-16 { gap: 16rpx; }
+
+/* ── 进度条 ─────────────────────────────────────────────────── */
+.progress-bar-bg {
+  height: 12rpx;
+  background: #F0F0F0;
+  border-radius: 6rpx;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 6rpx;
+  background: linear-gradient(90deg, #00C7B2, #00ddc9);
+  transition: width 0.4s ease;
+}
+
+/* ── 悬浮 AI 按钮 ──────────────────────────────────────────── */
+.float-ai-btn {
+  position: fixed;
+  right: 40rpx;
+  bottom: 180rpx;
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50rpx;
+  background: linear-gradient(135deg, #00C7B2 0%, #00a898 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 32rpx rgba(0,199,178,0.5);
+  z-index: 999;
+}
+.float-ai-icon {
+  font-size: 48rpx;
+}
+
+/* ── 表单 ───────────────────────────────────────────────────── */
+.form-item {
+  margin-bottom: 32rpx;
+}
+.form-label {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #262626;
+  margin-bottom: 12rpx;
+  display: block;
+}
+.form-input {
+  width: 100%;
+  height: 80rpx;
+  background: #F5F7FA;
+  border-radius: 12rpx;
+  border: 2rpx solid #E8E8E8;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+}
+.form-input:focus {
+  border-color: #00C7B2;
+  background: #F0FBF9;
+}
+
+/* ── 加载态 ─────────────────────────────────────────────────── */
+.loading-mask {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(255,255,255,0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}

@@ -1,0 +1,369 @@
+<!-- pages/assessment/index.wxml — 营养评估 (MP-10~16) · 阿福管家重构 -->
+<view class="root">
+
+  <!-- 全屏 OCR Loading 遮罩 (MP-15) -->
+  <view class="ocr-mask" wx:if="{{ocrLoading}}">
+    <view class="ocr-box">
+      <view class="ocr-spin">🤖</view>
+      <view class="ocr-tip">AI 正在识别化验单...</view>
+      <view class="ocr-sub">请稍候，预计 5~10 秒</view>
+    </view>
+  </view>
+
+  <!-- 顶部 Tab 导航 -->
+  <view class="tab-bar">
+    <view class="tab-item {{activeTab==='scale'?'tab-active':''}}" bindtap="onTab" data-tab="scale">量表评分</view>
+    <view class="tab-item {{activeTab==='enter'?'tab-active':''}}" bindtap="onTab" data-tab="enter">化验录入</view>
+    <view class="tab-item {{activeTab==='result'?'tab-active':''}}" bindtap="onTab" data-tab="result">风险结果</view>
+  </view>
+
+  <!-- ====== Tab 一：量表评分 (MP-10/11) ====== -->
+  <scroll-view wx:if="{{activeTab==='scale'}}" scroll-y class="tab-body">
+
+    <!-- NRS 2002 -->
+    <view class="section-banner">
+      <view class="section-banner-left">
+        <view class="section-icon teal">📊</view>
+        <view>
+          <view class="section-title">NRS 2002 营养风险筛查</view>
+          <view class="section-sub">住院适用·共 4 题</view>
+        </view>
+      </view>
+      <view class="tag-teal">住院适用</view>
+    </view>
+
+    <view wx:for="{{nrsQuestions}}" wx:key="id" class="q-card">
+      <view class="q-num-row">
+        <view class="q-num">Q{{index+1}}</view>
+        <view class="q-text">{{item.text}}</view>
+      </view>
+      <view class="q-options">
+        <view wx:for="{{item.options}}" wx:for-item="opt" wx:key="val"
+              class="q-opt {{nrsAnswers[item.id]===opt.val?'q-opt-sel':''}}"
+              bindtap="onNrsAnswer" data-qid="{{item.id}}" data-val="{{opt.val}}">
+          <view class="q-opt-radio {{nrsAnswers[item.id]===opt.val?'q-opt-radio-sel':''}}"></view>
+          <view class="q-opt-body">
+            <view class="q-opt-label">{{opt.label}}</view>
+            <view class="q-opt-score {{nrsAnswers[item.id]===opt.val?'q-opt-score-sel':''}}">+{{opt.val}} 分</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- NRS 实时分数条 -->
+    <view class="score-bar score-bar-{{nrsRisk}}">
+      <view class="score-bar-left">
+        <text class="score-num">{{nrsScore}}</text>
+        <text class="score-unit">分</text>
+      </view>
+      <view class="score-bar-right">
+        <view class="score-risk-text score-risk-{{nrsRisk}}">{{nrsRiskText}}</view>
+        <view class="score-hint">NRS 2002 尝评分：≥ 3 分属于营养风险</view>
+      </view>
+    </view>
+
+    <view class="action-row">
+      <button class="btn-primary" bindtap="saveNrsScale">保存 NRS 结果</button>
+    </view>
+
+    <!-- PG-SGA -->
+    <view class="section-banner mt20">
+      <view class="section-banner-left">
+        <view class="section-icon green">📓</view>
+        <view>
+          <view class="section-title">PG-SGA 患者自评</view>
+          <view class="section-sub">全程适用·共 4 题</view>
+        </view>
+      </view>
+      <view class="tag-green">全程适用</view>
+    </view>
+
+    <view wx:for="{{sgaItems}}" wx:key="id" class="q-card">
+      <view class="q-num-row">
+        <view class="q-num green">P{{index+1}}</view>
+        <view class="q-text">{{item.text}}</view>
+      </view>
+      <view class="q-options">
+        <view wx:for="{{item.options}}" wx:for-item="opt" wx:key="val"
+              class="q-opt {{sgaAnswers[item.id]===opt.val?'q-opt-sel':''}}"
+              bindtap="onSgaAnswer" data-qid="{{item.id}}" data-val="{{opt.val}}">
+          <view class="q-opt-radio {{sgaAnswers[item.id]===opt.val?'q-opt-radio-sel':''}}"></view>
+          <view class="q-opt-body">
+            <view class="q-opt-label">{{opt.label}}</view>
+            <view class="q-opt-score {{sgaAnswers[item.id]===opt.val?'q-opt-score-sel':''}}">+{{opt.val}} 分</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="score-bar score-bar-{{sgaRisk}}">
+      <view class="score-bar-left">
+        <text class="score-num">{{sgaScore}}</text>
+        <text class="score-unit">分</text>
+      </view>
+      <view class="score-bar-right">
+        <view class="score-risk-text score-risk-{{sgaRisk}}">{{sgaRiskText}}</view>
+        <view class="score-hint">PG-SGA：≥ 4 分需对症处理，≥ 9 分紧迫需要干预</view>
+      </view>
+    </view>
+
+    <view class="action-row mb40">
+      <button class="btn-primary green" bindtap="saveSgaScale">保存 PG-SGA 结果</button>
+    </view>
+
+  </scroll-view>
+
+  <!-- ====== Tab 二：化验录入 (MP-12/13/14/15) ====== -->
+  <scroll-view wx:if="{{activeTab==='enter'}}" scroll-y class="tab-body">
+
+    <!-- OCR 上传框 (MP-14) -->
+    <view class="section-banner">
+      <view class="section-banner-left">
+        <view class="section-icon orange">📷</view>
+        <view>
+          <view class="section-title">AI 化验单识别</view>
+          <view class="section-sub">拍照/相册即可自动回填</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="upload-zone" bindtap="onUploadAndOcr">
+      <view wx:if="{{!labImagePath}}" class="upload-inner">
+        <view class="upload-cam">📷</view>
+        <view class="upload-title">点击上传 / 拍摄检验单</view>
+        <view class="upload-desc">支持住院检验报告、体检单</view>
+        <view class="upload-badge">🤖 AI 自动识别回填</view>
+      </view>
+      <view wx:else class="upload-preview-wrap">
+        <image src="{{labImagePath}}" class="upload-preview" mode="aspectFit"/>
+        <view class="upload-retake">重新拍摄</view>
+      </view>
+    </view>
+
+    <!-- OCR 回填提示 (MP-15) -->
+    <view class="ocr-done-tip" wx:if="{{ocrFilled}}">
+      <view class="ocr-done-icon">✅</view>
+      <view class="ocr-done-text">AI 已自动回填 {{ocrFilledCount}} 项指标，异常项已标红，请核对确认</view>
+    </view>
+
+    <!-- 手动录入 (MP-12/13) -->
+    <view class="section-banner mt20">
+      <view class="section-banner-left">
+        <view class="section-icon teal">🧪</view>
+        <view>
+          <view class="section-title">手动录入指标</view>
+          <view class="section-sub">OCR 回填后可手动修改</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="form-card">
+      <view wx:for="{{labFields}}" wx:key="key" class="form-row">
+        <view class="form-label-row">
+          <text class="form-label">{{item.label}}</text>
+          <text class="form-unit">{{item.unit}}</text>
+          <view class="form-warn-chip" wx:if="{{labWarnings[item.key]}}">{{labWarnings[item.key]}}</view>
+        </view>
+        <input
+          class="form-input {{labWarnings[item.key]?'form-input-warn':''}}"
+          type="digit"
+          placeholder="{{item.placeholder}}"
+          value="{{labValues[item.key]}}"
+          bindinput="onLabInput"
+          data-key="{{item.key}}"/>
+      </view>
+    </view>
+
+    <view class="action-row mb40">
+      <button class="btn-primary" bindtap="onSubmitLab" loading="{{submitLoading}}">
+        {{submitLoading ? '提交中...' : '提交并生成评估'}}
+      </button>
+    </view>
+
+  </scroll-view>
+
+  <!-- ====== Tab 三：风险结果 (MP-16) ====== -->
+  <scroll-view wx:if="{{activeTab==='result'}}" scroll-y class="tab-body">
+
+    <!-- 风险等级卡 -->
+    <view class="result-hero result-hero-{{riskLevel}}">
+      <view class="result-hero-inner">
+        <view class="result-hero-icon">{{riskIcon}}</view>
+        <view>
+          <view class="result-hero-label">营养风险等级</view>
+          <view class="result-hero-badge">{{riskText}}</view>
+        </view>
+        <view class="result-hero-scores">
+          <view class="result-mini-score">
+            <view class="rms-val">{{nrsScore}}</view>
+            <view class="rms-key">NRS</view>
+          </view>
+          <view class="result-mini-score">
+            <view class="rms-val">{{sgaScore}}</view>
+            <view class="rms-key">SGA</view>
+          </view>
+        </view>
+      </view>
+      <view class="result-explain">{{riskExplain}}</view>
+    </view>
+
+    <!-- 指标雷达棒图 (MP-16) -->
+    <view class="card" wx:if="{{radarItems.length}}">
+      <view class="card-title-row">
+        <view class="card-title">指标概览</view>
+        <view class="card-sub">棒形在正常区间内计 100%</view>
+      </view>
+      <view wx:for="{{radarItems}}" wx:key="key" class="radar-row">
+        <view class="radar-label">{{item.label}}</view>
+        <view class="radar-track">
+          <view class="radar-fill radar-fill-{{item.status}}" style="width:{{item.pct}}%"></view>
+        </view>
+        <view class="radar-val radar-val-{{item.status}}">{{item.val}}<text class="radar-unit">{{item.unit}}</text></view>
+      </view>
+    </view>
+
+    <!-- AI 改善建议 (MP-16) -->
+    <view class="ai-suggest-card" wx:if="{{suggestions.length}}">
+      <view class="ai-suggest-head">
+        <view class="ai-head-icon">🤖</view>
+        <view>
+          <view class="ai-head-title">AI 营养建议</view>
+          <view class="ai-head-sub">gpt-4o 生成 · 仅供参考</view>
+        </view>
+      </view>
+      <view wx:for="{{suggestions}}" wx:key="index" class="suggest-item">
+        <view class="suggest-dot"></view>
+        <view class="suggest-text">{{item}}</view>
+      </view>
+    </view>
+
+    <!-- AI 廻可以在线请求廻  -->
+    <view class="action-row mb40">
+      <button class="btn-primary" bindtap="onFetchAiSuggest" loading="{{aiLoading}}">
+        {{aiLoading ? 'AI 处理中...' : '重新获取 AI 建议'}}
+      </button>
+    </view>
+
+  </scroll-view>
+
+</view>
+<view class="page-root">
+
+  <!-- 顶部 Tab -->
+  <view class="tab-bar">
+    <view class="tab-item {{activeTab==='scale'?'tab-active':''}}" bindtap="onTab" data-tab="scale">营养量表</view>
+    <view class="tab-item {{activeTab==='enter'?'tab-active':''}}" bindtap="onTab" data-tab="enter">指标录入</view>
+    <view class="tab-item {{activeTab==='result'?'tab-active':''}}" bindtap="onTab" data-tab="result">风险结果</view>
+  </view>
+
+  <!-- Tab: 营养量表 (MP-10 NRS2002 / MP-11 SGA) -->
+  <scroll-view wx:if="{{activeTab==='scale'}}" scroll-y class="tab-body">
+    <view class="card mx24 mt24">
+      <view class="card-header-row">
+        <text class="card-title">NRS 2002 营养风险筛查</text>
+        <text class="tag-blue">住院适用</text>
+      </view>
+      <view wx:for="{{nrsQuestions}}" wx:key="id" class="question-item">
+        <view class="question-text">{{index+1}}. {{item.text}}</view>
+        <view class="option-row">
+          <view wx:for="{{item.options}}" wx:for-item="opt" wx:key="val"
+                class="option-btn {{nrsAnswers[item.id]===opt.val?'option-selected':''}}"
+                bindtap="onNrsAnswer" data-qid="{{item.id}}" data-val="{{opt.val}}">
+            {{opt.label}}
+          </view>
+        </view>
+      </view>
+      <view class="score-row">
+        <text class="score-label">当前得分：</text>
+        <text class="score-val text-{{nrsRisk}}">{{nrsScore}} 分（{{nrsRiskText}}）</text>
+      </view>
+      <button class="btn-primary mt16" bindtap="saveNrsScale">保存评估结果</button>
+    </view>
+
+    <view class="card mx24 mt16">
+      <view class="card-header-row">
+        <text class="card-title">PG-SGA 患者自评</text>
+        <text class="tag-green">全程适用</text>
+      </view>
+      <view wx:for="{{sgaItems}}" wx:key="id" class="question-item">
+        <view class="question-text">{{item.text}}</view>
+        <view class="option-row">
+          <view wx:for="{{item.options}}" wx:for-item="opt" wx:key="val"
+                class="option-btn {{sgaAnswers[item.id]===opt.val?'option-selected':''}}"
+                bindtap="onSgaAnswer" data-qid="{{item.id}}" data-val="{{opt.val}}">
+            {{opt.label}}
+          </view>
+        </view>
+      </view>
+      <button class="btn-primary mt16" bindtap="saveSgaScale">保存 PG-SGA</button>
+    </view>
+  </scroll-view>
+
+  <!-- Tab: 指标录入 (MP-12 ~ MP-14 拍照/手动录入) -->
+  <scroll-view wx:if="{{activeTab==='enter'}}" scroll-y class="tab-body">
+    <view class="card mx24 mt24">
+      <view class="card-title">拍照上传检验单</view>
+      <view class="upload-area" bindtap="onUploadImage">
+        <image wx:if="{{labImagePath}}" src="{{labImagePath}}" class="lab-image" mode="aspectFit"/>
+        <view wx:else class="upload-placeholder">
+          <text class="upload-icon">📷</text>
+          <text class="upload-hint">点击选择/拍摄检验单</text>
+        </view>
+      </view>
+      <button class="btn-secondary mt16" wx:if="{{labImagePath}}" bindtap="onOcrParse" loading="{{ocrLoading}}">
+        {{ocrLoading ? '识别中...' : '自动识别指标'}}
+      </button>
+    </view>
+
+    <view class="card mx24 mt16">
+      <view class="card-title">手动录入指标</view>
+      <view wx:for="{{labFields}}" wx:key="key" class="form-row">
+        <text class="form-label">{{item.label}}<text class="form-unit">（{{item.unit}}）</text></text>
+        <input class="form-input"
+               type="digit"
+               placeholder="{{item.placeholder}}"
+               value="{{labValues[item.key]}}"
+               bindinput="onLabInput"
+               data-key="{{item.key}}"/>
+        <view wx:if="{{labWarnings[item.key]}}" class="form-warn text-warning">{{labWarnings[item.key]}}</view>
+      </view>
+      <button class="btn-primary mt20" bindtap="onSubmitLab" loading="{{submitLoading}}">
+        {{submitLoading ? '提交中...' : '提交检验数据'}}
+      </button>
+    </view>
+  </scroll-view>
+
+  <!-- Tab: 风险结果 (MP-15 ~ MP-16) -->
+  <scroll-view wx:if="{{activeTab==='result'}}" scroll-y class="tab-body">
+    <view class="risk-result-card mx24 mt24 risk-card-{{riskLevel}}">
+      <view class="result-header">
+        <text class="result-icon">{{riskIcon}}</text>
+        <view>
+          <view class="result-title">营养风险等级</view>
+          <view class="result-badge risk-{{riskLevel}}">{{riskText}}</view>
+        </view>
+      </view>
+      <view class="result-explain">{{riskExplain}}</view>
+    </view>
+
+    <view class="card mx24 mt16">
+      <view class="card-title">指标雷达概览</view>
+      <view wx:for="{{radarItems}}" wx:key="key" class="radar-row">
+        <text class="radar-label">{{item.label}}</text>
+        <view class="radar-bar-bg">
+          <view class="radar-bar-fill bar-{{item.status}}" style="width:{{item.pct}}%"></view>
+        </view>
+        <text class="radar-val text-{{item.status}}">{{item.val}} {{item.unit}}</text>
+      </view>
+    </view>
+
+    <view class="card mx24 mt16" wx:if="{{suggestions.length}}">
+      <view class="card-title">营养行动建议</view>
+      <view wx:for="{{suggestions}}" wx:key="index" class="suggestion-item">
+        <text class="suggestion-dot">•</text>
+        <text class="suggestion-text">{{item}}</text>
+      </view>
+    </view>
+  </scroll-view>
+
+</view>

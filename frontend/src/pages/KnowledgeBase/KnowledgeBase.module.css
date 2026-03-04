@@ -1,0 +1,132 @@
+/* KnowledgeBase.module.css */
+
+.pageWrapper {
+  padding: 24px;
+  min-height: calc(100vh - 56px);
+  background: #F7F8FA;
+}
+
+.pageHeader {
+  margin-bottom: 20px;
+}
+
+.tabCard {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+/* 症状四维标签 */
+.fourDimGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.dimCard {
+  background: #FAFAFA;
+  border: 1px solid #F0F0F0;
+  border-radius: 6px;
+  padding: 10px 12px;
+}
+
+.dimLabel {
+  font-size: 11px;
+  color: #8C8C8C;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.dimValue {
+  font-size: 13px;
+  color: #262626;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+/* 向量化状态徽标 */
+.vectorizedBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.vectorizedBadge.done {
+  background: #F6FFED;
+  color: #52C41A;
+  border: 1px solid #B7EB8F;
+}
+
+.vectorizedBadge.pending {
+  background: #FFF7E6;
+  color: #FA8C16;
+  border: 1px solid #FFD591;
+}
+
+/* 规则配置面板 */
+.rulePhaseCard {
+  border: 1px solid #E8E8E8;
+  border-radius: 8px;
+  padding: 20px 24px;
+  background: #fff;
+  margin-bottom: 16px;
+  transition: box-shadow 0.2s;
+}
+
+.rulePhaseCard:hover {
+  box-shadow: 0 2px 8px rgba(22, 119, 255, 0.1);
+}
+
+.phaseTitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1677FF;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 向量化进度条 */
+.vectorizeProgress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #E6F4FF;
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+
+/* 统计卡片行 */
+.statsRow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.statCard {
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px 20px;
+  border: 1px solid #F0F0F0;
+  text-align: center;
+}
+
+.statValue {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.statLabel {
+  font-size: 12px;
+  color: #8C8C8C;
+  margin-top: 4px;
+}

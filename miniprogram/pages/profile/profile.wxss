@@ -1,0 +1,11 @@
+.page { min-height: 100vh; background: #F4F6F8; padding-bottom: 40rpx; }
+.user-card { background: #00C7B2; padding: 48rpx 32rpx; display: flex; align-items: center; }
+.avatar { width: 100rpx; height: 100rpx; border-radius: 50%; background: #fff; margin-right: 28rpx; }
+.user-name { display: block; color: #fff; font-size: 36rpx; font-weight: 600; }
+.user-phase { display: block; color: rgba(255, 255, 255, 0.8); font-size: 26rpx; margin-top: 8rpx; }
+.menu-group { margin: 24rpx 32rpx 0; background: #fff; border-radius: 16rpx; overflow: hidden; }
+.menu-item { display: flex; align-items: center; padding: 28rpx 28rpx; border-bottom: 1rpx solid #F5F5F5; }
+.menu-item:last-child { border-bottom: none; }
+.menu-icon { font-size: 36rpx; margin-right: 20rpx; }
+.menu-label { flex: 1; font-size: 30rpx; color: #333; }
+.menu-arrow { color: #C0C0C0; font-size: 36rpx; }

@@ -1,0 +1,12 @@
+<view class="page">
+  <view class="score-card">
+    <text class="score-label">营养风险评分</text>
+    <text class="score-val">{{score}}</text>
+    <text class="score-unit">分</text>
+    <text class="risk-level">{{riskText}}</text>
+  </view>
+  <view class="section">
+    <text class="section-title">建议</text>
+    <text class="rec-text">{{recommendation}}</text>
+  </view>
+</view>

@@ -1,0 +1,23 @@
+.page { min-height: 100vh; background: #F4F6F8; padding-bottom: 40rpx; }
+.header { background: #00C7B2; padding: 40rpx 32rpx 48rpx; }
+.header-title { display: block; color: #fff; font-size: 40rpx; font-weight: 600; }
+.header-sub { display: block; color: rgba(255, 255, 255, 0.8); font-size: 26rpx; margin-top: 8rpx; }
+.today-section { margin: 32rpx 32rpx 0; background: #fff; border-radius: 16rpx; padding: 28rpx; }
+.today-header { display: flex; justify-content: space-between; margin-bottom: 24rpx; }
+.today-title { font-size: 30rpx; font-weight: 600; color: #222; }
+.today-date { font-size: 26rpx; color: #999; }
+.meal-btns { display: flex; justify-content: space-around; }
+.meal-btn { display: flex; flex-direction: column; align-items: center; padding: 20rpx 16rpx; border-radius: 12rpx; border: 2rpx solid #E8EDF3; min-width: 130rpx; position: relative; }
+.meal-btn.done { background: #E6FAF8; border-color: #00C7B2; }
+.meal-emoji { font-size: 40rpx; }
+.meal-name { font-size: 26rpx; color: #555; margin-top: 8rpx; }
+.check-mark { position: absolute; top: 8rpx; right: 8rpx; color: #00C7B2; font-size: 24rpx; }
+.section { margin: 24rpx 32rpx 0; background: #fff; border-radius: 16rpx; padding: 28rpx; }
+.section-title { font-size: 28rpx; color: #888; display: block; margin-bottom: 20rpx; font-weight: 500; }
+.record-item { display: flex; justify-content: space-between; align-items: center; padding: 20rpx 0; border-bottom: 1rpx solid #F5F5F5; }
+.record-item:last-child { border-bottom: none; }
+.record-meal { font-size: 30rpx; color: #333; display: block; }
+.record-date { font-size: 24rpx; color: #999; margin-top: 6rpx; }
+.score-badge { font-size: 24rpx; padding: 8rpx 20rpx; border-radius: 40rpx; }
+.score-badge.good { background: #E6FAF0; color: #1A8A50; }
+.score-badge.warn { background: #FFF3CD; color: #B07D00; }

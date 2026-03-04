@@ -1,0 +1,15 @@
+<view class="page">
+  <view class="header">
+    <text class="title">消息中心</text>
+  </view>
+  <view wx:for="{{messages}}" wx:key="id" class="msg-item">
+    <view class="msg-icon-wrap {{item.type}}">
+      <text class="msg-icon">{{item.icon}}</text>
+    </view>
+    <view class="msg-body">
+      <text class="msg-title">{{item.title}}</text>
+      <text class="msg-text">{{item.content}}</text>
+      <text class="msg-time">{{item.time}}</text>
+    </view>
+  </view>
+</view>

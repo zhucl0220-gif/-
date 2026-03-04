@@ -1,0 +1,7 @@
+.page { min-height: 100vh; background: #F4F6F8; padding-bottom: 40rpx; }
+.header { background: #00C7B2; padding: 40rpx 32rpx; }
+.title { color: #fff; font-size: 40rpx; font-weight: 600; display: block; }
+.content-card { margin: 32rpx; background: #fff; border-radius: 16rpx; padding: 32rpx; }
+.content-text { font-size: 28rpx; color: #444; line-height: 1.9; display: block; }
+.action-bar { padding: 0 32rpx; }
+.sign-btn { background: #00C7B2; color: #fff; font-size: 32rpx; border-radius: 12rpx; font-weight: 500; }

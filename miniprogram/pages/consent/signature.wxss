@@ -1,0 +1,530 @@
+/* ================================================================
+   手写签名页面样式
+   风格：阿福管家 · 医疗暖青 · 大卡片 · 柔和阴影
+   ================================================================ */
+
+/* ── 页面容器 ───────────────────────────────────────────────── */
+.page-wrap {
+  min-height: 100vh;
+  background: #F4F6F8;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: env(safe-area-inset-bottom, 40rpx);
+}
+
+/* ── 自定义导航栏 ────────────────────────────────────────────── */
+.nav-bar {
+  background: linear-gradient(135deg, #00C7B2 0%, #00A896 100%);
+  padding-bottom: 0;
+}
+
+.nav-inner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 88rpx;
+  padding: 0 24rpx;
+}
+
+.nav-back {
+  width: 64rpx;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.nav-back-icon {
+  font-size: 44rpx;
+  color: #FFFFFF;
+  font-weight: 300;
+  line-height: 1;
+  margin-top: -4rpx;
+}
+
+.nav-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: 2rpx;
+}
+
+.nav-placeholder {
+  width: 64rpx;
+}
+
+/* ── 步骤进度条 ──────────────────────────────────────────────── */
+.step-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+  padding: 24rpx 40rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+}
+
+.step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.step-dot {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  background: #E0E6ED;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.step-dot-done {
+  background: #00C7B2;
+}
+
+.step-dot-active {
+  background: #FFFFFF;
+  border: 3rpx solid #00C7B2;
+  box-shadow: 0 0 0 6rpx rgba(0, 199, 178, 0.15);
+}
+
+.step-check {
+  font-size: 20rpx;
+  color: #FFFFFF;
+  font-weight: 700;
+}
+
+.step-num {
+  font-size: 20rpx;
+  color: #A0A8B5;
+  font-weight: 600;
+}
+
+.step-dot-active .step-num {
+  color: #00C7B2;
+}
+
+.step-label {
+  font-size: 20rpx;
+  color: #A0A8B5;
+  white-space: nowrap;
+}
+
+.step-label-active {
+  color: #00C7B2;
+  font-weight: 600;
+}
+
+/* 步骤连接线 */
+.step-line {
+  flex: 1;
+  height: 2rpx;
+  background: #E0E6ED;
+  margin: 0 12rpx;
+  margin-bottom: 28rpx; /* 对齐圆点中线 */
+}
+
+.step-line-done {
+  background: #00C7B2;
+}
+
+/* ── 提示卡片 ────────────────────────────────────────────────── */
+.tip-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20rpx;
+  background: #E6FAF8;
+  border-radius: 20rpx;
+  margin: 24rpx 24rpx 0;
+  padding: 24rpx;
+  border-left: 6rpx solid #00C7B2;
+}
+
+.tip-icon {
+  font-size: 44rpx;
+  flex-shrink: 0;
+}
+
+.tip-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+}
+
+.tip-title {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: #00796B;
+}
+
+.tip-desc {
+  font-size: 22rpx;
+  color: #4CAF9E;
+  line-height: 1.5;
+}
+
+/* ── Canvas 签名区卡片 ───────────────────────────────────────── */
+.canvas-card {
+  background: #FFFFFF;
+  border-radius: 32rpx;
+  margin: 24rpx 24rpx 0;
+  padding: 28rpx 28rpx 20rpx;
+  box-shadow:
+    0 4rpx 24rpx rgba(0, 199, 178, 0.10),
+    0 1rpx 4rpx rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+.canvas-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16rpx;
+}
+
+.canvas-label {
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #A0A8B5;
+  letter-spacing: 2rpx;
+}
+
+.canvas-hint {
+  display: flex;
+  align-items: center;
+}
+
+.canvas-hint-text {
+  font-size: 22rpx;
+  color: #C4CBD6;
+  font-style: italic;
+}
+
+/* 画布容器（相对定位，放置水印） */
+.canvas-wrap {
+  width: 100%;
+  position: relative;
+  background: #FAFCFC;
+  border-radius: 16rpx;
+  border: 2rpx dashed #D0EDEA;
+  overflow: hidden;
+}
+
+/* Canvas 本身（宽高由 JS 动态设置） */
+.signature-canvas {
+  display: block;
+  width: 100%;
+}
+
+/* 空状态水印 */
+.canvas-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.placeholder-text {
+  font-size: 40rpx;
+  color: rgba(0, 199, 178, 0.12);
+  font-weight: 800;
+  letter-spacing: 8rpx;
+}
+
+/* 基准线 */
+.canvas-baseline {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12rpx;
+  margin-top: 12rpx;
+  padding: 0 8rpx;
+}
+
+.baseline-line {
+  flex: 1;
+  height: 2rpx;
+  background: linear-gradient(90deg, transparent, #D0EDEA 20%, #D0EDEA 80%, transparent);
+}
+
+.baseline-label {
+  font-size: 20rpx;
+  color: #C4CBD6;
+  letter-spacing: 2rpx;
+}
+
+/* ── 工具栏卡片 ──────────────────────────────────────────────── */
+.toolbar-card {
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  margin: 20rpx 24rpx 0;
+  padding: 24rpx 28rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0;
+  box-shadow:
+    0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+}
+
+.toolbar-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14rpx;
+}
+
+.toolbar-label {
+  font-size: 22rpx;
+  color: #A0A8B5;
+  letter-spacing: 1rpx;
+}
+
+/* 笔粗按钮 */
+.pen-size-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.pen-size-btn {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  background: #F4F6F8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2rpx solid transparent;
+  transition: all 0.2s ease;
+}
+
+.pen-size-active {
+  background: #E6FAF8;
+  border-color: #00C7B2;
+}
+
+.pen-dot {
+  background: #1A1A2E;
+  border-radius: 50%;
+  min-width: 6rpx;
+  min-height: 6rpx;
+}
+
+/* 笔色按钮 */
+.pen-color-row {
+  display: flex;
+  flex-direction: row;
+  gap: 16rpx;
+}
+
+.pen-color-btn {
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3rpx solid transparent;
+  transition: all 0.2s ease;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.15);
+}
+
+.pen-color-active {
+  border-color: #FFFFFF;
+  box-shadow:
+    0 0 0 4rpx rgba(0, 199, 178, 0.5),
+    0 2rpx 8rpx rgba(0, 0, 0, 0.2);
+  transform: scale(1.1);
+}
+
+.pen-color-check {
+  font-size: 22rpx;
+  color: #FFFFFF;
+  font-weight: 700;
+}
+
+/* 工具栏分隔线 */
+.toolbar-divider {
+  width: 1rpx;
+  height: 64rpx;
+  background: #F0F3F6;
+  margin: 0 24rpx;
+  flex-shrink: 0;
+}
+
+/* ── 底部操作按钮 ─────────────────────────────────────────────── */
+.bottom-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 16rpx;
+  padding: 24rpx 24rpx 0;
+  margin-top: auto;
+}
+
+/* 重写按钮 */
+.btn-clear {
+  width: 160rpx;
+  height: 96rpx;
+  border-radius: 24rpx;
+  background: #FFFFFF;
+  border: 2rpx solid #E0E6ED;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+
+.btn-clear:active {
+  background: #F4F6F8;
+  transform: scale(0.96);
+}
+
+.btn-clear-icon {
+  font-size: 36rpx;
+  color: #5A6478;
+  line-height: 1;
+}
+
+.btn-clear-text {
+  font-size: 22rpx;
+  color: #5A6478;
+  font-weight: 600;
+}
+
+/* 提交按钮 */
+.btn-submit {
+  flex: 1;
+  height: 96rpx;
+  border-radius: 24rpx;
+  background: linear-gradient(135deg, #00C7B2, #00A896);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6rpx 20rpx rgba(0, 199, 178, 0.45);
+  transition: all 0.15s ease;
+}
+
+.btn-submit:active:not(.btn-submit-disabled) {
+  transform: scale(0.97);
+  box-shadow: 0 3rpx 10rpx rgba(0, 199, 178, 0.3);
+}
+
+.btn-submit-disabled {
+  background: linear-gradient(135deg, #C8D0DB, #B8C0CC);
+  box-shadow: none;
+}
+
+.btn-submit-loading {
+  background: linear-gradient(135deg, #00A896, #008F80);
+}
+
+.btn-submit-inner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.btn-submit-icon {
+  font-size: 36rpx;
+  color: #FFFFFF;
+  font-weight: 700;
+}
+
+.btn-submit-text {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: 2rpx;
+}
+
+/* ── 上传进度浮层 ─────────────────────────────────────────────── */
+.upload-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(10, 20, 30, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.upload-modal {
+  background: #FFFFFF;
+  border-radius: 32rpx;
+  padding: 48rpx 52rpx;
+  width: 480rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20rpx;
+  box-shadow: 0 16rpx 48rpx rgba(0, 0, 0, 0.15);
+}
+
+/* 旋转加载圈 */
+.upload-spinner {
+  width: 72rpx;
+  height: 72rpx;
+  border: 6rpx solid #E6FAF8;
+  border-top-color: #00C7B2;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.upload-tip {
+  font-size: 28rpx;
+  color: #1A1A2E;
+  font-weight: 600;
+  letter-spacing: 1rpx;
+}
+
+.upload-progress-bar {
+  width: 100%;
+  height: 12rpx;
+  background: #F0F3F6;
+  border-radius: 100rpx;
+  overflow: hidden;
+}
+
+.upload-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00C7B2, #4DD9CC);
+  border-radius: 100rpx;
+  transition: width 0.3s ease;
+}
+
+.upload-progress-num {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #00C7B2;
+}

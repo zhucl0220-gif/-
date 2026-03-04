@@ -1,0 +1,100 @@
+/* pages/faq/index.wxss */
+.page-root { min-height: 100vh; background: #F8F9FA; padding-bottom: 60rpx; }
+.pad24  { padding-left: 24rpx; padding-right: 24rpx; }
+.mt20   { margin-top: 20rpx; }
+.mt16   { margin-top: 16rpx; }
+.mt12   { margin-top: 12rpx; }
+.mt8    { margin-top: 8rpx; }
+
+/* 搜索 */
+.search-wrap { padding-top: 20rpx; }
+.search-bar {
+  display: flex; align-items: center;
+  background: #fff; border-radius: 48rpx;
+  padding: 0 28rpx; height: 80rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0,199,178,0.10);
+}
+.search-icon { font-size: 28rpx; margin-right: 12rpx; }
+.search-input { flex: 1; font-size: 28rpx; color: #333; }
+
+/* 8 格网格 */
+.grid-nav {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16rpx;
+}
+.grid-item {
+  background: #fff; border-radius: 20rpx;
+  padding: 28rpx 0 20rpx;
+  display: flex; flex-direction: column; align-items: center; gap: 8rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.05);
+  border: 2rpx solid transparent;
+  transition: all .2s;
+}
+.grid-active {
+  border-color: #00C7B2;
+  box-shadow: 0 4rpx 16rpx rgba(0,199,178,0.25);
+}
+.grid-emoji { font-size: 44rpx; }
+.grid-name  { font-size: 22rpx; color: #333; font-weight: 600; }
+.grid-risk  {
+  font-size: 20rpx; padding: 2rpx 12rpx; border-radius: 20rpx; font-weight: 500;
+}
+.risk-low    { background: #f6ffed; color: #52c41a; }
+.risk-medium { background: #fffbe6; color: #faad14; }
+.risk-high   { background: #fff2f0; color: #ff4d4f; }
+
+.empty-tip { grid-column: 1 / -1; text-align: center; font-size: 28rpx; color: #bbb; padding: 60rpx 0; }
+
+/* 手风琴区 */
+.accordion-area { }
+
+.acc-header {
+  display: flex; align-items: flex-start; gap: 18rpx;
+  background: #fff; border-radius: 20rpx;
+  padding: 28rpx 24rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.05);
+}
+.acc-icon { font-size: 52rpx; flex-shrink: 0; }
+.acc-header-info { flex: 1; }
+.acc-name  { font-size: 30rpx; font-weight: 700; color: #1a1a1a; display: block; }
+.acc-brief { font-size: 24rpx; color: #888; margin-top: 4rpx; display: block; line-height: 1.5; }
+.s-risk {
+  font-size: 22rpx; padding: 4rpx 16rpx; border-radius: 20rpx;
+  font-weight: 600; flex-shrink: 0; align-self: flex-start;
+}
+.acc-close {
+  font-size: 36rpx; color: #bbb; padding: 0 4rpx; align-self: flex-start;
+  flex-shrink: 0;
+}
+
+/* 折叠面板 */
+.dim-panel {
+  background: #fff; border-radius: 16rpx;
+  overflow: hidden;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04);
+  margin-bottom: 12rpx;
+}
+.dim-panel-hd {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 22rpx 24rpx;
+  border-left-style: solid;
+}
+.dim-panel-title { font-size: 28rpx; font-weight: 700; color: #1a1a1a; }
+.dim-panel-arrow {
+  font-size: 28rpx; color: #bbb;
+  transition: transform .2s;
+  display: inline-block;
+}
+.arrow-up { transform: rotate(180deg); }
+
+.dim-panel-bd {
+  padding: 4rpx 24rpx 20rpx 32rpx;
+  border-top: 2rpx solid #f5f5f5;
+}
+.dim-item {
+  display: flex; gap: 10rpx; margin-top: 14rpx;
+  align-items: flex-start;
+}
+.dim-dot { font-size: 28rpx; flex-shrink: 0; line-height: 1.8; }
+.dim-text { font-size: 26rpx; color: #444; line-height: 2.0; flex: 1; }

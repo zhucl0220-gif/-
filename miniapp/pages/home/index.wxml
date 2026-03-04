@@ -1,0 +1,127 @@
+<!-- pages/home/index.wxml — 首页 (MP-06~09) · 阿福管家风 -->
+<view class="root">
+
+  <!-- ══ 顶部欢迎区 ════════════════════════════ -->
+  <view class="header">
+    <view class="header-top">
+      <view class="header-left">
+        <!-- MP-06: 大字号问候语 -->
+        <view class="greeting">{{greeting}}，{{patientName || '患者朋友'}}</view>
+        <view class="date-text">{{today}}</view>
+      </view>
+      <view class="avatar">{{patientName ? patientName.slice(-1) : '患'}}</view>
+    </view>
+
+    <!-- MP-08: 风险标识卡 -->
+    <view class="risk-chip risk-chip-{{riskLevel}}" bindtap="onRiskTip">
+      <text class="risk-icon">{{riskIcon}}</text>
+      <text class="risk-text">{{riskText}}</text>
+      <text class="risk-question">？</text>
+    </view>
+  </view>
+
+  <!-- 风险说明弹窗 -->
+  <view class="mask" wx:if="{{showRiskPop}}" bindtap="onCloseRiskPop">
+    <view class="risk-pop" catchtap="stopPop">
+      <view class="risk-pop-top risk-pop-{{riskLevel}}">
+        <text class="risk-pop-icon">{{riskIcon}}</text>
+        <text class="risk-pop-title">{{riskText}}</text>
+      </view>
+      <view class="risk-pop-body">{{riskTip}}</view>
+      <button class="risk-pop-btn" bindtap="onCloseRiskPop">我知道了</button>
+    </view>
+  </view>
+
+  <!-- ══ MP-07: 移植阶段进度卡 ══════════════════ -->
+  <view class="card phase-card">
+    <view class="section-head">
+      <text class="section-title">我的营养旅程</text>
+      <view class="phase-tag phase-tag-{{currentPhase}}">{{phaseText}}</view>
+    </view>
+
+    <!-- 横向进度条 -->
+    <view class="phase-bar-outer">
+      <view class="phase-bar-fill" style="width:{{phaseProgress}}%"></view>
+    </view>
+
+    <!-- 阶段节点 -->
+    <view class="phase-nodes">
+      <view
+        class="phase-node {{item.id < phaseIdx ? 'done' : item.id === phaseIdx ? 'active' : 'idle'}}"
+        wx:for="{{phases}}" wx:key="id"
+      >
+        <view class="phase-dot">
+          <text wx:if="{{item.id < phaseIdx}}" class="phase-check">✓</text>
+          <text wx:elif="{{item.id === phaseIdx}}" class="phase-pulse"></text>
+        </view>
+        <text class="phase-label">{{item.name}}</text>
+      </view>
+    </view>
+    <view class="phase-tip-bar">{{phaseTip}}</view>
+  </view>
+
+  <!-- ══ MP-09: 近 7 日营养摘要 ═══════════════════ -->
+  <view class="card stat-card">
+    <view class="section-head"><text class="section-title">近7日营养摘要</text></view>
+    <view class="stat-row">
+
+      <view class="stat-item">
+        <view class="stat-val">{{recentDietDays}}</view>
+        <view class="stat-unit">天</view>
+        <view class="stat-key">打卡天数</view>
+      </view>
+
+      <view class="stat-sep"></view>
+
+      <view class="stat-item">
+        <view class="stat-val stat-green">{{recentCompliance}}</view>
+        <view class="stat-unit">%</view>
+        <view class="stat-key">计划达成</view>
+      </view>
+
+      <view class="stat-sep"></view>
+
+      <view class="stat-item">
+        <view class="stat-val stat-{{lastRisk}}">{{lastAlbuminVal || '--'}}</view>
+        <view class="stat-unit">g/L</view>
+        <view class="stat-key">白蛋白</view>
+      </view>
+
+    </view>
+  </view>
+
+  <!-- ══ 快捷功能入口 ══════════════════════════ -->
+  <view class="quick-grid">
+    <view class="quick-item" bindtap="goAssessment">
+      <view class="quick-icon qi-teal">📋</view>
+      <text class="quick-label">营养评估</text>
+    </view>
+    <view class="quick-item" bindtap="goAction">
+      <view class="quick-icon qi-green">🥗</view>
+      <text class="quick-label">饮食打卡</text>
+    </view>
+    <view class="quick-item" bindtap="goFaq">
+      <view class="quick-icon qi-orange">💡</view>
+      <text class="quick-label">症状解惑</text>
+    </view>
+    <view class="quick-item" bindtap="goQa">
+      <view class="quick-icon qi-purple">🤖</view>
+      <text class="quick-label">AI 问答</text>
+    </view>
+  </view>
+
+  <!-- 档案未完善提示 -->
+  <view class="card prompt-card" wx:if="{{!profileComplete}}" bindtap="goFillInfo">
+    <view class="prompt-left">
+      <view class="prompt-title">完善基本信息</view>
+      <view class="prompt-sub">填写个人档案以获得精准营养建议</view>
+    </view>
+    <text class="prompt-arrow">›</text>
+  </view>
+
+  <!-- 悬浮 AI 按钮 -->
+  <view class="fab-ai" bindtap="goQa">
+    <text class="fab-text">AI</text>
+  </view>
+
+</view>

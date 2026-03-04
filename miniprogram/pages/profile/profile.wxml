@@ -1,0 +1,31 @@
+<view class="page">
+  <view class="user-card">
+    <image class="avatar" src="/assets/icons/avatar.png" mode="aspectFill"/>
+    <view class="user-info">
+      <text class="user-name">{{userInfo.name || '点击登录'}}</text>
+      <text class="user-phase">{{userInfo.phaseText || '未设置阶段'}}</text>
+    </view>
+  </view>
+  <view class="menu-group">
+    <view class="menu-item" bindtap="navTo" data-url="/pages/consent/signature">
+      <text class="menu-icon">📋</text><text class="menu-label">知情同意书</text><text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="navTo" data-url="/pages/lab/upload">
+      <text class="menu-icon">🧪</text><text class="menu-label">我的化验记录</text><text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="navTo" data-url="/pages/diet/record">
+      <text class="menu-icon">🍱</text><text class="menu-label">饮食打卡记录</text><text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="navTo" data-url="/pages/messages/messages">
+      <text class="menu-icon">💬</text><text class="menu-label">消息中心</text><text class="menu-arrow">›</text>
+    </view>
+  </view>
+  <view class="menu-group">
+    <view class="menu-item">
+      <text class="menu-icon">📞</text><text class="menu-label">联系营养师</text><text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item">
+      <text class="menu-icon">❓</text><text class="menu-label">使用帮助</text><text class="menu-arrow">›</text>
+    </view>
+  </view>
+</view>

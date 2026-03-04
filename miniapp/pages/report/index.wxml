@@ -1,0 +1,151 @@
+<!-- pages/report/index.wxml — 打印风报告页 -->
+<view class="page-root">
+
+  <!-- 加载 -->
+  <view wx:if="{{loading}}" class="loading-wrap">
+    <text class="loading-spin">⏳</text>
+    <text class="loading-text">正在加载报告…</text>
+  </view>
+
+  <!-- 报告内容 -->
+  <scroll-view wx:elif="{{report}}" scroll-y class="report-scroll">
+
+    <!-- ══ 打印头 ══ -->
+    <view class="print-header">
+      <view class="print-logo-row">
+        <text class="print-logo-icon">🏥</text>
+        <text class="print-hospital">协和医院肝移植中心</text>
+      </view>
+      <view class="print-divider-heavy"></view>
+      <text class="print-main-title">肝移植营养评估报告</text>
+      <view class="print-subtitle-row">
+        <text class="print-subtitle">生成日期：{{report.date}}</text>
+        <view class="print-risk-badge risk-badge-{{report.riskLevel}}">{{report.riskText}}</view>
+      </view>
+    </view>
+
+    <!-- ══ §1 基本信息 ══ -->
+    <view class="report-section">
+      <view class="section-hd">
+        <text class="sec-num">01</text>
+        <text class="sec-title">基本信息</text>
+        <view class="sec-line"></view>
+      </view>
+      <view class="info-grid-2x3">
+        <view class="info-cell">
+          <text class="cell-label">患者姓名</text>
+          <text class="cell-val">{{report.patientName}}</text>
+        </view>
+        <view class="info-cell">
+          <text class="cell-label">恢复阶段</text>
+          <text class="cell-val">{{report.phaseText}}</text>
+        </view>
+        <view class="info-cell">
+          <text class="cell-label">体重</text>
+          <text class="cell-val">{{report.weight || '--'}} <text class="cell-unit">kg</text></text>
+        </view>
+        <view class="info-cell">
+          <text class="cell-label">BMI</text>
+          <text class="cell-val bmi-val">{{report.bmi || '--'}}</text>
+        </view>
+        <view class="info-cell">
+          <text class="cell-label">NRS评分</text>
+          <text class="cell-val">{{report.nrsScore || '--'}} <text class="cell-unit">分</text></text>
+        </view>
+        <view class="info-cell">
+          <text class="cell-label">SGA级别</text>
+          <text class="cell-val">{{report.sgaGrade || '--'}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="section-divider"></view>
+
+    <!-- ══ §2 指标达标度 ══ -->
+    <view class="report-section" wx:if="{{report.labItems && report.labItems.length}}">
+      <view class="section-hd">
+        <text class="sec-num">02</text>
+        <text class="sec-title">指标达标度</text>
+        <view class="sec-line"></view>
+      </view>
+      <view wx:for="{{report.labItems}}" wx:key="name" class="lab-row">
+        <view class="lab-row-top">
+          <text class="lab-name-txt">{{item.name}}</text>
+          <text class="lab-val-txt text-{{item.status}}">{{item.value}} {{item.unit}}</text>
+          <text class="lab-status-tag tag-{{item.status}}">
+            {{item.status==='success'?'达标':item.status==='danger'?'偏低':'偏高'}}
+          </text>
+        </view>
+        <!-- 进度条：含正常区间 -->
+        <view class="lab-bar-track">
+          <!-- 绿色正常区间底色 -->
+          <view class="lab-normal-bg"
+                style="left:{{item.normalLeft}}%; width:{{item.normalWidth}}%;"></view>
+          <!-- 实际数值指针 -->
+          <view class="lab-bar-fill fill-{{item.status}}"
+                style="width:{{item.pct}}%;"></view>
+          <!-- 指针线 -->
+          <view class="lab-needle" style="left:{{item.pct}}%;"></view>
+        </view>
+        <view class="lab-ref-row">
+          <text class="lab-ref-txt">参考范围：{{item.refMin}} ~ {{item.refMax}} {{item.unit}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="section-divider" wx:if="{{report.labItems && report.labItems.length}}"></view>
+
+    <!-- ══ §3 个性化建议 ══ -->
+    <view class="report-section">
+      <view class="section-hd">
+        <text class="sec-num">03</text>
+        <text class="sec-title">个性化营养建议</text>
+        <view class="sec-line"></view>
+      </view>
+      <view wx:for="{{report.suggestions}}" wx:key="index" class="suggest-item"
+            bindtap="onToggleSuggest" data-idx="{{index}}">
+        <view class="suggest-check {{checkedSuggests[index] ? 'checked' : ''}}">
+          <text class="check-mark" wx:if="{{checkedSuggests[index]}}">✓</text>
+        </view>
+        <text class="suggest-txt {{checkedSuggests[index] ? 'txt-done' : ''}}">{{item}}</text>
+      </view>
+      <view class="suggest-progress-row">
+        <text class="sp-label">已完成 {{checkedCount}}/{{report.suggestions.length}}</text>
+        <view class="sp-bar-bg">
+          <view class="sp-bar-fill" style="width:{{checkedCount/report.suggestions.length*100}}%"></view>
+        </view>
+      </view>
+    </view>
+
+    <view class="section-divider"></view>
+
+    <!-- ══ §4 本阶段饮食方案 ══ -->
+    <view class="report-section" wx:if="{{report.dietPlan}}">
+      <view class="section-hd">
+        <text class="sec-num">04</text>
+        <text class="sec-title">本阶段饮食方案</text>
+        <view class="sec-line"></view>
+      </view>
+      <text class="diet-text">{{report.dietPlan}}</text>
+    </view>
+
+    <!-- ══ 底部免责声明 ══ -->
+    <view class="print-footer">
+      <view class="print-divider-light"></view>
+      <text class="footer-disclaimer">本报告由 AI 营养系统生成，仅供参考，不替代医嘱。如有疑问请联系主治医生或营养师。</text>
+    </view>
+
+    <view class="btn-wrap">
+      <button class="btn-back" bindtap="onBack">← 返回</button>
+    </view>
+
+  </scroll-view>
+
+  <!-- 空态 -->
+  <view wx:elif="{{!loading}}" class="empty-wrap">
+    <text class="empty-icon">📋</text>
+    <text class="empty-text">报告不存在或已失效</text>
+    <button class="btn-back mt20" bindtap="onBack">返回</button>
+  </view>
+
+</view>
